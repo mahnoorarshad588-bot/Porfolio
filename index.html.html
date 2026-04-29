@@ -1,0 +1,3173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahnoor Arshad | Data Scientist & Graphic Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root {
+  --ink:        #0d1117;
+  --ink-soft:   #1c2733;
+  --ink-muted:  #2e4057;
+  --slate:      #4a6fa5;
+  --blue:       #166088;
+  --cyan:       #0ea5e9;
+  --teal:       #0d9488;
+  --teal-light: #2dd4bf;
+  --gold:       #f59e0b;
+  --cream:      #fafaf8;
+  --surface:    #ffffff;
+  --border:     rgba(14,165,233,0.15);
+  --border-soft: rgba(14,165,233,0.08);
+  --glow:       rgba(14,165,233,0.12);
+  --glow-teal:  rgba(13,148,136,0.15);
+  --mono: 'JetBrains Mono', monospace;
+  --display: 'DM Serif Display', Georgia, serif;
+  --body: 'DM Sans', system-ui, sans-serif;
+  --r: 14px;
+  --r-lg: 24px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
+
+body {
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.75;
+  overflow-x: hidden;
+  max-width: 100vw;
+  cursor: none;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ───── CUSTOM CURSOR ───── */
+.cur { position:fixed; pointer-events:none; z-index:9999; top:0; left:0; }
+.cur-dot {
+  width:10px; height:10px; background:var(--cyan); border-radius:50%;
+  transform:translate(-50%,-50%); transition:transform .08s, background .2s;
+}
+.cur-ring {
+  width:38px; height:38px; border:1.5px solid var(--cyan);
+  border-radius:50%; transform:translate(-50%,-50%);
+  opacity:.4; transition:all .18s ease;
+}
+body:hover .cur-dot { background:var(--teal-light); }
+
+/* ───── LOADING ───── */
+#loader {
+  position:fixed; inset:0; background:var(--ink);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:10000; transition:opacity .6s ease;
+}
+.loader-name {
+  font-family:var(--display); font-size:2.4rem; color:#fff;
+  letter-spacing:.04em; animation: fadeUp .8s ease forwards;
+}
+.loader-bar {
+  margin-top:1.5rem; width:180px; height:2px; background:rgba(255,255,255,.1);
+  border-radius:4px; overflow:hidden;
+}
+.loader-fill {
+  height:100%; background:linear-gradient(90deg,var(--teal),var(--cyan));
+  border-radius:4px; animation: loadFill 1.4s ease forwards;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+@keyframes loadFill { from{width:0} to{width:100%} }
+
+/* ───── NAVBAR ───── */
+nav {
+  position:fixed; top:0; width:100%; z-index:1000;
+  padding:.9rem 3.5rem; display:flex; justify-content:space-between; align-items:center;
+  background:rgba(250,250,248,.88); backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border); transition:all .3s ease;
+}
+nav.scrolled { padding:.6rem 3.5rem; background:rgba(250,250,248,.97); box-shadow:0 4px 32px rgba(0,0,0,.07); }
+.nav-logo {
+  font-family:var(--display); font-size:1.55rem; color:var(--ink);
+  text-decoration:none; letter-spacing:.02em;
+}
+.nav-logo span { color:var(--cyan); }
+.nav-links { display:flex; list-style:none; gap:2.2rem; }
+.nav-links a {
+  color:var(--ink-muted); text-decoration:none; font-size:.88rem; font-weight:500;
+  letter-spacing:.04em; text-transform:uppercase; transition:color .25s;
+  position:relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px;
+  background:var(--cyan); transition:width .3s ease;
+}
+.nav-links a:hover { color:var(--ink); }
+.nav-links a:hover::after { width:100%; }
+.nav-cta {
+  padding:.45rem 1.1rem; background:var(--ink); color:#fff !important;
+  border-radius:8px; letter-spacing:.03em !important;
+}
+.nav-cta::after { display:none !important; }
+.nav-cta:hover { background:var(--blue) !important; color:#fff !important; }
+/* hamburger — defined once here, shown via media queries below */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  z-index: 2100;
+  position: relative;
+  padding: 5px;
+  background: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hamburger span {
+  display: block;
+  width: 23px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+.hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ───── HERO ───── */
+.hero {
+  min-height:100vh; display:grid; grid-template-columns:1fr 1fr; align-items:center;
+  padding:8rem 5rem 5rem;
+  background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(14,165,233,.07) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 40% at 20% 80%, rgba(13,148,136,.06) 0%, transparent 60%),
+              var(--cream);
+  gap:4rem; position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; top:0; right:0;
+  width:55%; height:100%;
+  background:radial-gradient(ellipse at center,rgba(14,165,233,.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.35rem .9rem; border:1px solid var(--border);
+  border-radius:100px; font-size:.78rem; font-family:var(--mono);
+  color:var(--teal); background:rgba(13,148,136,.07); margin-bottom:1.4rem;
+  animation:fadeUp .7s .2s ease both;
+}
+.hero-badge::before { content:'●'; font-size:.55rem; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.hero-heading {
+  font-family:var(--display); font-size:clamp(2.6rem,4.5vw,4.2rem);
+  line-height:1.13; color:var(--ink); margin-bottom:.9rem;
+  animation:fadeUp .7s .35s ease both;
+}
+.hero-heading em { font-style:italic; color:var(--cyan); }
+.hero-sub {
+  font-size:1.08rem; color:var(--ink-muted); max-width:480px;
+  margin-bottom:1.8rem; line-height:1.8;
+  animation:fadeUp .7s .5s ease both;
+}
+.hero-sub strong { color:var(--ink); font-weight:600; }
+.typewriter-wrap { font-family:var(--mono); font-size:.95rem; color:var(--teal); margin-bottom:2rem; animation:fadeUp .7s .65s ease both; }
+#typewriter::after { content:'|'; animation:blink .8s infinite; margin-left:2px; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; animation:fadeUp .7s .8s ease both; }
+.btn {
+  display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.8rem;
+  border-radius:10px; font-size:.9rem; font-weight:600; text-decoration:none;
+  transition:all .25s ease; cursor:pointer; border:none; font-family:var(--body);
+}
+.btn-primary {
+  background:var(--ink); color:#fff;
+  box-shadow:0 4px 16px rgba(13,17,23,.15);
+}
+.btn-primary:hover { background:var(--blue); transform:translateY(-2px); box-shadow:0 8px 28px rgba(22,96,136,.3); }
+.btn-secondary {
+  background:transparent; color:var(--ink); border:1.5px solid var(--border);
+}
+.btn-secondary:hover { border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px); }
+
+.hero-stats { display:flex; gap:2.5rem; margin-top:2.5rem; animation:fadeUp .7s .95s ease both; }
+.stat-item { text-align:left; }
+.stat-num { font-family:var(--display); font-size:2.1rem; color:var(--ink); line-height:1; }
+.stat-label { font-size:.78rem; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.06em; margin-top:.25rem; }
+
+/* ── Hero 3D Visual ── */
+.hero-visual {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  animation:fadeUp .8s .4s ease both;
+}
+.avatar-frame {
+  position:relative; width:360px; height:360px;
+}
+.avatar-glow {
+  position:absolute; inset:-30px;
+  background:radial-gradient(ellipse at center, rgba(14,165,233,.15), transparent 70%);
+  border-radius:50%; animation:glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%,100%{transform:scale(1);opacity:.7} 50%{transform:scale(1.08);opacity:1} }
+.avatar-ring {
+  position:absolute; inset:0; border-radius:50%;
+  border:1px solid var(--border);
+  animation:ringRotate 18s linear infinite;
+}
+.avatar-ring::before {
+  content:''; position:absolute; top:-4px; left:50%; width:8px; height:8px;
+  background:var(--cyan); border-radius:50%; transform:translateX(-50%);
+  box-shadow:0 0 12px var(--cyan);
+}
+.avatar-ring-2 {
+  position:absolute; inset:20px; border-radius:50%;
+  border:1px dashed rgba(14,165,233,.25);
+  animation:ringRotate 28s linear infinite reverse;
+}
+@keyframes ringRotate { to{transform:rotate(360deg)} }
+.avatar-svg {
+  position:absolute; inset:20px; border-radius:50%; overflow:hidden;
+  background:linear-gradient(145deg,#e8f4f7,#d0e8f0);
+  box-shadow:0 20px 60px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.8);
+}
+.avatar-svg svg { width:100%; height:100%; }
+
+/* floating chips */
+.float-chip {
+  position:absolute; background:white; border:1px solid var(--border);
+  border-radius:12px; padding:.5rem .85rem; font-size:.75rem; font-weight:600;
+  color:var(--ink-muted); display:flex; align-items:center; gap:.4rem;
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  animation:floatY 4s ease-in-out infinite;
+  white-space:nowrap;
+}
+.float-chip svg { width:16px; height:16px; }
+.chip1 { top:10px; right:-20px; animation-delay:0s; }
+.chip2 { bottom:60px; right:-25px; animation-delay:1.3s; }
+.chip3 { bottom:10px; left:-20px; animation-delay:.6s; }
+.chip4 { top:60px; left:-30px; animation-delay:2s; }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* ───── SECTION SHARED ───── */
+.section { padding:6rem 5rem; }
+.section-label {
+  font-family:var(--mono); font-size:.78rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--teal); margin-bottom:.75rem; display:flex; align-items:center; gap:.6rem;
+}
+.section-label::before { content:''; width:24px; height:1px; background:var(--teal); }
+.section-title {
+  font-family:var(--display); font-size:clamp(2rem,3.5vw,2.8rem);
+  color:var(--ink); margin-bottom:1rem; line-height:1.2;
+}
+.section-desc { color:var(--ink-muted); font-size:1.02rem; max-width:560px; margin-bottom:3.5rem; }
+
+/* ───── ABOUT ───── */
+.about { background:white; border-radius:var(--r-lg); margin:0 2rem; padding:5rem; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; box-shadow:0 2px 40px rgba(0,0,0,.05); }
+.about-text p { color:var(--ink-muted); margin-bottom:1rem; line-height:1.85; }
+.about-text p strong { color:var(--ink); }
+.about-tags { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.8rem; }
+.about-tag {
+  padding:.3rem .85rem; background:var(--glow); border:1px solid var(--border);
+  border-radius:100px; font-size:.8rem; font-family:var(--mono); color:var(--teal);
+}
+.about-visual { position:relative; }
+.about-code-block {
+  background:var(--ink); border-radius:14px; padding:1.8rem; font-family:var(--mono);
+  font-size:.8rem; line-height:1.9; box-shadow:0 20px 50px rgba(0,0,0,.15);
+  overflow:hidden; position:relative;
+}
+.code-bar {
+  position:absolute; top:0; left:0; right:0; padding:.6rem 1rem;
+  background:rgba(255,255,255,.04); display:flex; align-items:center; gap:.4rem;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.code-dot { width:10px; height:10px; border-radius:50%; }
+.code-dot.r { background:#ff5f57; } .code-dot.y { background:#ffbd2e; } .code-dot.g { background:#28c840; }
+.code-content { margin-top:1.5rem; }
+.c-comment { color:#6b737e; }
+.c-keyword { color:#ff7b72; }
+.c-string { color:#a5d6ff; }
+.c-fn { color:#d2a8ff; }
+.c-num { color:#79c0ff; }
+.c-var { color:#ffa657; }
+.c-text { color:#cdd9e5; }
+.about-metric-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+.about-metric {
+  background:white; border:1px solid var(--border); border-radius:12px;
+  padding:1.1rem 1.3rem; box-shadow:0 2px 12px rgba(0,0,0,.04);
+}
+.about-metric .num { font-family:var(--display); font-size:1.8rem; color:var(--ink); line-height:1; }
+.about-metric .lbl { font-size:.75rem; color:var(--ink-muted); margin-top:.2rem; text-transform:uppercase; letter-spacing:.05em; }
+
+/* ───── SKILLS ───── */
+.skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+.skill-card {
+  background:white; border:1px solid var(--border-soft); border-radius:var(--r);
+  padding:1.8rem; transition:all .3s ease;
+  position:relative; overflow:hidden;
+}
+.skill-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--teal));
+  transform:scaleX(0); transform-origin:left; transition:transform .4s ease;
+}
+.skill-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,.09); border-color:var(--border); }
+.skill-card:hover::before { transform:scaleX(1); }
+.skill-icon {
+  width:44px; height:44px; background:linear-gradient(135deg,var(--cyan),var(--teal));
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  margin-bottom:1.1rem;
+}
+.skill-icon svg { width:22px; height:22px; fill:white; }
+.skill-card h3 { font-size:1rem; font-weight:600; margin-bottom:.8rem; }
+.skill-tags { display:flex; flex-wrap:wrap; gap:.4rem; }
+.skill-tag {
+  padding:.2rem .6rem; background:rgba(14,165,233,.07);
+  border:1px solid rgba(14,165,233,.12); border-radius:6px;
+  font-size:.72rem; font-family:var(--mono); color:var(--slate);
+}
+
+/* ───── PROJECTS ───── */
+.projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.8rem; }
+.project-card {
+  background:white; border:1px solid var(--border-soft); border-radius:var(--r-lg);
+  overflow:hidden; transition:all .3s ease; position:relative; cursor:default;
+}
+.project-card:hover { transform:translateY(-6px); box-shadow:0 24px 56px rgba(0,0,0,.1); border-color:var(--border); }
+.project-visual {
+  height:200px; position:relative; overflow:hidden;
+  background:linear-gradient(135deg,#0d1117 0%,#1c2733 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.project-visual svg { width:100%; height:100%; }
+.project-badge {
+  position:absolute; top:1rem; left:1rem; padding:.25rem .65rem;
+  border-radius:100px; font-size:.68rem; font-family:var(--mono); font-weight:600;
+  background:rgba(14,165,233,.15); border:1px solid rgba(14,165,233,.3); color:var(--cyan);
+}
+.project-body { padding:1.6rem; }
+.project-body h3 { font-size:1.05rem; font-weight:700; margin-bottom:.5rem; }
+.project-body p { font-size:.88rem; color:var(--ink-muted); line-height:1.7; margin-bottom:1.1rem; }
+.project-stack { display:flex; flex-wrap:wrap; gap:.35rem; }
+.project-stack span {
+  padding:.2rem .6rem; background:var(--cream); border:1px solid var(--border);
+  border-radius:6px; font-size:.7rem; font-family:var(--mono); color:var(--ink-muted);
+}
+
+/* ───── EXPERIENCE ───── */
+.timeline { position:relative; padding-left:2.5rem; }
+.timeline::before {
+  content:''; position:absolute; left:.6rem; top:.5rem; bottom:.5rem;
+  width:1px; background:linear-gradient(to bottom,var(--cyan),transparent);
+}
+.tl-item { position:relative; margin-bottom:2.5rem; }
+.tl-dot {
+  position:absolute; left:-2.5rem; top:.3rem;
+  width:14px; height:14px; border-radius:50%;
+  background:white; border:2px solid var(--cyan);
+  box-shadow:0 0 0 4px rgba(14,165,233,.1);
+  transition:all .3s;
+}
+.tl-item:hover .tl-dot { background:var(--cyan); box-shadow:0 0 0 6px rgba(14,165,233,.15); }
+.tl-date {
+  font-family:var(--mono); font-size:.75rem; color:var(--teal);
+  margin-bottom:.3rem; letter-spacing:.04em;
+}
+.tl-title { font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:.25rem; }
+.tl-company { font-size:.85rem; color:var(--cyan); font-weight:500; margin-bottom:.5rem; }
+.tl-desc { font-size:.88rem; color:var(--ink-muted); line-height:1.75; }
+
+/* ───── EDUCATION ───── */
+.edu-card {
+  background:white; border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:3rem; max-width:600px; margin:0 auto; text-align:center;
+  box-shadow:0 4px 30px rgba(0,0,0,.05); position:relative; overflow:hidden;
+}
+.edu-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,var(--cyan),var(--teal),var(--gold));
+}
+.edu-icon { font-size:3rem; margin-bottom:1.2rem; }
+.edu-card h3 { font-family:var(--display); font-size:1.6rem; color:var(--ink); margin-bottom:.4rem; }
+.edu-card p { color:var(--ink-muted); font-size:1rem; }
+.edu-card .degree { font-size:1.05rem; font-weight:600; color:var(--ink); margin-top:.4rem; }
+.edu-year { display:inline-block; margin-top:.8rem; padding:.25rem .9rem; background:var(--glow); border:1px solid var(--border); border-radius:100px; font-size:.8rem; font-family:var(--mono); color:var(--teal); }
+
+/* ───── SERVICES ───── */
+.services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; }
+.svc-card {
+  background:white; border:1px solid var(--border-soft); border-radius:var(--r);
+  padding:2rem; transition:all .3s ease; text-align:center;
+  position:relative; overflow:hidden;
+}
+.svc-card:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(0,0,0,.09); border-color:var(--cyan); }
+.svc-icon {
+  width:56px; height:56px; border-radius:16px; margin:0 auto 1.2rem;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,var(--ink),var(--ink-soft));
+}
+.svc-card h3 { font-size:1rem; font-weight:700; margin-bottom:.6rem; }
+.svc-card p { font-size:.85rem; color:var(--ink-muted); line-height:1.7; }
+
+/* ───── CONTACT ───── */
+.contact-wrapper { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+.contact-info .contact-title { font-family:var(--display); font-size:2rem; margin-bottom:1rem; }
+.contact-info p { color:var(--ink-muted); margin-bottom:2rem; line-height:1.8; }
+.contact-links { display:flex; flex-direction:column; gap:1rem; }
+.contact-link {
+  display:flex; align-items:center; gap:.85rem; padding:1rem 1.3rem;
+  background:white; border:1px solid var(--border); border-radius:12px;
+  text-decoration:none; color:var(--ink); transition:all .25s;
+}
+.contact-link:hover { border-color:var(--cyan); transform:translateX(4px); box-shadow:0 4px 20px rgba(14,165,233,.1); }
+.contact-link svg { width:20px; height:20px; flex-shrink:0; }
+.contact-link span { font-size:.9rem; font-weight:500; }
+.contact-form-wrap {
+  background:white; border:1px solid var(--border); border-radius:var(--r-lg); padding:2.5rem;
+  box-shadow:0 4px 30px rgba(0,0,0,.05);
+}
+.form-group { margin-bottom:1.2rem; }
+.form-group input, .form-group textarea {
+  width:100%; padding:.85rem 1.1rem; border:1.5px solid var(--border);
+  border-radius:10px; font-family:var(--body); font-size:.9rem; color:var(--ink);
+  background:var(--cream); outline:none; transition:border-color .25s, box-shadow .25s;
+  resize:vertical;
+}
+.form-group input:focus, .form-group textarea:focus {
+  border-color:var(--cyan); box-shadow:0 0 0 3px rgba(14,165,233,.08);
+}
+.form-group input::placeholder, .form-group textarea::placeholder { color:#9ba7b4; }
+
+/* ───── BRAND CONSULTANT SECTION ───── */
+.brand-consultant-section {
+  position: relative;
+  padding: 6rem 5rem;
+  background: linear-gradient(160deg, #f0f9ff 0%, #fafaf8 40%, #f0fdf9 100%);
+  overflow: hidden;
+}
+.bc-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.bc-blob1 {
+  width: 500px; height: 500px;
+  top: -180px; right: -120px;
+  background: radial-gradient(circle, rgba(14,165,233,.08) 0%, transparent 70%);
+}
+.bc-blob2 {
+  width: 400px; height: 400px;
+  bottom: -150px; left: -80px;
+  background: radial-gradient(circle, rgba(13,148,136,.07) 0%, transparent 70%);
+}
+.bc-inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.bc-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .35rem 1rem; border-radius: 100px;
+  background: rgba(14,165,233,.08); border: 1px solid rgba(14,165,233,.2);
+  font-family: var(--mono); font-size: .75rem; color: var(--cyan);
+  margin-bottom: 1.4rem; width: fit-content;
+}
+.bc-badge-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--cyan); animation: pulse 2s infinite;
+}
+.bc-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.5vw, 2.9rem);
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.bc-title span {
+  background: linear-gradient(90deg, var(--cyan), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.bc-desc {
+  color: var(--ink-muted); font-size: 1rem; line-height: 1.85;
+  max-width: 480px; margin-bottom: 2.5rem;
+}
+.bc-desc em { color: var(--ink); font-style: normal; font-weight: 600; }
+.bc-services {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.4rem; margin-bottom: 2.5rem;
+}
+.bc-svc-item {
+  display: flex; gap: .85rem; align-items: flex-start;
+  background: white; border: 1px solid var(--border-soft);
+  border-radius: 14px; padding: 1.1rem 1.2rem;
+  transition: all .3s ease;
+}
+.bc-svc-item:hover {
+  border-color: var(--border);
+  box-shadow: 0 8px 28px rgba(14,165,233,.08);
+  transform: translateY(-2px);
+}
+.bc-svc-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(14,165,233,.12), rgba(13,148,136,.12));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cyan);
+}
+.bc-svc-item h4 {
+  font-size: .85rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .3rem;
+}
+.bc-svc-item p {
+  font-size: .78rem; color: var(--ink-muted); line-height: 1.65;
+  margin: 0;
+}
+.bc-cta {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .8rem 1.8rem; background: var(--ink); color: white;
+  border-radius: 12px; text-decoration: none; font-weight: 600;
+  font-size: .9rem; transition: all .25s ease;
+  box-shadow: 0 4px 18px rgba(13,17,23,.15);
+  border: none; cursor: pointer; font-family: var(--body);
+}
+.bc-cta:hover {
+  background: var(--blue);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(22,96,136,.25);
+}
+.bc-illustration {
+  display: flex; align-items: center; justify-content: center;
+}
+.bc-svg {
+  width: 100%; max-width: 520px;
+  filter: drop-shadow(0 20px 60px rgba(14,165,233,.08));
+  animation: floatY 6s ease-in-out infinite;
+}
+
+/* ───── PROJECT TABS ───── */
+.proj-tab {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.55rem 1.3rem; border-radius:10px; font-size:.85rem; font-weight:600;
+  cursor:pointer; border:1.5px solid var(--border); background:transparent;
+  color:var(--ink-muted); font-family:var(--body); transition:all .25s;
+}
+.proj-tab:hover { border-color:var(--cyan); color:var(--ink); }
+.proj-tab.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+
+/* ───── DESIGN CLIENTS BANNER ───── */
+.design-clients-banner {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  border-radius: var(--r-lg); padding: 3.5rem; margin: 4rem 0 0;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;
+  align-items: center; position: relative; overflow: hidden;
+}
+.design-clients-banner::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:240px; height:240px; border-radius:50%;
+  background:radial-gradient(circle, rgba(14,165,233,.12), transparent 70%);
+}
+.dcb-stat { text-align:center; }
+.dcb-num { font-family:var(--display); font-size:3rem; color:#fff; line-height:1; }
+.dcb-num span { color:var(--cyan); }
+.dcb-label { font-size:.82rem; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.07em; margin-top:.4rem; }
+.dcb-divider { width:1px; height:60px; background:rgba(255,255,255,.1); margin:0 auto; }
+.dcb-text h3 { font-family:var(--display); font-size:1.6rem; color:#fff; margin-bottom:.5rem; }
+.dcb-text p { color:rgba(255,255,255,.6); font-size:.9rem; line-height:1.7; }
+
+/* ───── FOOTER ───── */
+footer {
+  background:var(--ink); color:rgba(255,255,255,.5); text-align:center;
+  padding:2.5rem 2rem; font-size:.85rem;
+}
+footer span { color:var(--cyan); }
+
+/* ───── BACK TO TOP — Animated Orbit Button ───── */
+#btt {
+  position:fixed; bottom:2rem; right:2rem;
+  width:52px; height:52px;
+  background: transparent;
+  border: none; cursor:pointer; z-index:500;
+  opacity:0; pointer-events:none;
+  transition: opacity .35s ease;
+  display:flex; align-items:center; justify-content:center;
+  padding: 0;
+}
+#btt.show { opacity:1; pointer-events:auto; animation: bttPop .5s cubic-bezier(.34,1.56,.64,1); }
+#btt:active { transform: scale(0.93); }
+.btt-ring {
+  position:absolute; inset:0; border-radius:50%;
+  border: 2px solid var(--cyan);
+  opacity: 0.45;
+  animation: bttRingPulse 2.2s ease-in-out infinite;
+}
+.btt-circle {
+  position:absolute; inset:4px; border-radius:50%;
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--teal) 100%);
+  box-shadow: 0 0 18px rgba(14,165,233,.45);
+  transition: box-shadow .3s ease, transform .3s ease;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+#btt:hover .btt-circle {
+  box-shadow: 0 0 32px rgba(14,165,233,.7), 0 0 0 6px rgba(14,165,233,.12);
+  transform: scale(1.08);
+}
+.btt-circle::after {
+  content:''; position:absolute; top:-50%; left:-60%;
+  width:40%; height:200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  transform: skewX(-20deg);
+  transition: left .55s ease;
+}
+#btt:hover .btt-circle::after { left:130%; }
+.btt-icon {
+  position:relative; z-index:1;
+  display:flex; align-items:center; justify-content:center;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+#btt:hover .btt-icon { transform: translateY(-3px); }
+.btt-orbit {
+  position:absolute; inset:0; border-radius:50%;
+  animation: bttOrbit 3s linear infinite;
+  pointer-events:none;
+}
+.btt-orbit::before {
+  content:''; position:absolute; top:-3px; left:50%;
+  width:6px; height:6px; border-radius:50%;
+  background: var(--teal-light); transform:translateX(-50%);
+  box-shadow: 0 0 8px var(--teal-light);
+}
+@keyframes bttOrbit { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes bttRingPulse {
+  0%,100%{transform:scale(1);opacity:.45} 50%{transform:scale(1.18);opacity:.15}
+}
+@keyframes bttPop {
+  0%{transform:scale(0) rotate(15deg);opacity:0}
+  65%{transform:scale(1.1) rotate(-4deg);opacity:1}
+  100%{transform:scale(1) rotate(0deg);opacity:1}
+}
+
+/* ───── DARK MODE TOGGLE ───── */
+#theme-toggle {
+  position:fixed; bottom:2rem; left:2rem; z-index:500;
+  width:56px; height:28px;
+  background: rgba(14,165,233,.15);
+  border:1.5px solid rgba(14,165,233,.3);
+  border-radius:100px; cursor:pointer;
+  display:flex; align-items:center; padding:3px;
+  transition: background .35s ease, border-color .35s ease, box-shadow .3s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  -webkit-tap-highlight-color: transparent;
+}
+#theme-toggle:hover {
+  box-shadow: 0 0 0 4px rgba(14,165,233,.15), 0 4px 16px rgba(14,165,233,.2);
+}
+.toggle-knob {
+  width:20px; height:20px; border-radius:50%;
+  background: linear-gradient(135deg, var(--cyan), var(--teal));
+  box-shadow: 0 2px 8px rgba(14,165,233,.4);
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; line-height:1;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .35s ease;
+  transform: translateX(0);
+  position:relative; z-index:1;
+}
+.toggle-knob::before {
+  content:'☀️'; font-size:10px;
+}
+body.dark-mode #theme-toggle {
+  background: rgba(14,165,233,.2);
+  border-color: rgba(14,165,233,.45);
+}
+body.dark-mode .toggle-knob {
+  transform: translateX(28px);
+  background: linear-gradient(135deg, #1e2a4a, var(--cyan));
+}
+body.dark-mode .toggle-knob::before { content:'🌙'; }
+
+/* ═══════════════════════════════════════════════════════
+   DARK MODE — Complete Fix
+   ═══════════════════════════════════════════════════════ */
+body.dark-mode {
+  --cream:      #0d1117;
+  --surface:    #161b22;
+  --ink:        #e6edf3;
+  --ink-soft:   #c9d1d9;
+  --ink-muted:  #8b949e;
+  --border:     rgba(14,165,233,0.22);
+  --border-soft: rgba(14,165,233,0.12);
+  --glow:       rgba(14,165,233,0.08);
+  --glow-teal:  rgba(13,148,136,0.12);
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+/* Nav */
+body.dark-mode nav {
+  background: rgba(13,17,23,.92);
+  border-bottom-color: rgba(14,165,233,.15);
+}
+body.dark-mode nav.scrolled { background: rgba(13,17,23,.98); box-shadow: 0 4px 32px rgba(0,0,0,.4); }
+body.dark-mode .nav-logo { color: var(--ink); }
+body.dark-mode .nav-links a { color: var(--ink-muted); }
+body.dark-mode .nav-links a:hover { color: var(--ink); }
+body.dark-mode .nav-cta { background: rgba(14,165,233,.15) !important; color: var(--cyan) !important; border: 1px solid rgba(14,165,233,.3) !important; }
+body.dark-mode .nav-cta:hover { background: var(--cyan) !important; color: #fff !important; }
+body.dark-mode .hamburger span { background: var(--ink); }
+
+/* Sidebar */
+body.dark-mode #mobile-sidebar { background: #161b22; }
+body.dark-mode .sidebar-header { background: #0d1117; border-bottom-color: rgba(14,165,233,.12); }
+body.dark-mode .sidebar-logo { color: var(--ink); }
+body.dark-mode .sidebar-close { background: #1c2733; color: var(--ink-muted); border-color: rgba(14,165,233,.2); }
+body.dark-mode .sidebar-nav li a { color: var(--ink-muted); }
+body.dark-mode .sidebar-nav li a:hover { background: rgba(14,165,233,.1); color: var(--ink); }
+body.dark-mode .sidebar-footer { background: #0d1117; color: var(--ink-muted); border-top-color: rgba(14,165,233,.12); }
+
+/* Hero */
+body.dark-mode .hero {
+  background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(14,165,233,.06) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 40% at 20% 80%, rgba(13,148,136,.05) 0%, transparent 60%),
+              #0d1117;
+}
+body.dark-mode .hero-heading { color: var(--ink); }
+body.dark-mode .hero-heading em { color: var(--cyan); }
+body.dark-mode .hero-sub { color: var(--ink-muted); }
+body.dark-mode .hero-sub strong { color: var(--ink); }
+body.dark-mode .hero-badge { background: rgba(13,148,136,.12); color: var(--teal); border-color: rgba(13,148,136,.25); }
+body.dark-mode .stat-num { color: var(--ink); }
+body.dark-mode .stat-label { color: var(--ink-muted); }
+body.dark-mode .float-chip { background: #1c2733; border-color: rgba(14,165,233,.2); color: var(--ink-muted); }
+body.dark-mode .btn-primary { background: var(--cyan); color: #0d1117; }
+body.dark-mode .btn-primary:hover { background: var(--teal); }
+body.dark-mode .btn-secondary { color: var(--ink); border-color: rgba(14,165,233,.3); }
+body.dark-mode .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* About */
+body.dark-mode .about {
+  background: #161b22;
+  box-shadow: 0 2px 40px rgba(0,0,0,.3);
+  border: 1px solid rgba(14,165,233,.1);
+}
+body.dark-mode .about-text p { color: var(--ink-muted); }
+body.dark-mode .about-text p strong { color: var(--ink); }
+body.dark-mode .about-text h2 { color: var(--ink); }
+body.dark-mode .about-tag { background: rgba(14,165,233,.08); border-color: rgba(14,165,233,.18); color: var(--teal-light); }
+body.dark-mode .about-metric { background: #1c2733; border-color: rgba(14,165,233,.15); }
+body.dark-mode .about-metric .num { color: var(--ink); }
+body.dark-mode .about-metric .lbl { color: var(--ink-muted); }
+
+/* Skill cards */
+body.dark-mode .skill-card {
+  background: #161b22;
+  border-color: rgba(14,165,233,.12);
+}
+body.dark-mode .skill-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,.4); border-color: rgba(14,165,233,.25); }
+body.dark-mode .skill-card h3 { color: var(--ink); }
+body.dark-mode .skill-tag { background: rgba(14,165,233,.08); border-color: rgba(14,165,233,.15); color: #93c5fd; }
+
+/* Services / svc-cards */
+body.dark-mode .svc-card {
+  background: #161b22;
+  border-color: rgba(14,165,233,.12);
+}
+body.dark-mode .svc-card:hover { box-shadow: 0 12px 36px rgba(0,0,0,.4); border-color: var(--cyan); }
+body.dark-mode .svc-card h3 { color: var(--ink); }
+body.dark-mode .svc-card p { color: var(--ink-muted); }
+/* Service icon — fix washed-out look */
+body.dark-mode .svc-icon {
+  background: linear-gradient(135deg, rgba(14,165,233,.25), rgba(13,148,136,.25));
+  box-shadow: 0 0 0 1px rgba(14,165,233,.2);
+}
+body.dark-mode .svc-icon svg { filter: brightness(1.4); }
+
+/* Section labels / titles */
+body.dark-mode .section-title { color: var(--ink); }
+body.dark-mode .section-desc { color: var(--ink-muted); }
+
+/* Project cards */
+body.dark-mode .project-card {
+  background: #161b22;
+  border-color: rgba(14,165,233,.12);
+}
+body.dark-mode .project-card:hover { box-shadow: 0 24px 56px rgba(0,0,0,.5); border-color: rgba(14,165,233,.25); }
+body.dark-mode .project-body h3 { color: var(--ink); }
+body.dark-mode .project-body p { color: var(--ink-muted); }
+body.dark-mode .project-stack span { background: #1c2733; border-color: rgba(14,165,233,.15); color: var(--ink-muted); }
+
+/* Project tabs */
+body.dark-mode .proj-tab { border-color: rgba(14,165,233,.2); color: var(--ink-muted); background: transparent; }
+body.dark-mode .proj-tab:hover { border-color: var(--cyan); color: var(--ink); }
+body.dark-mode .proj-tab.active { background: var(--cyan); color: #0d1117; border-color: var(--cyan); }
+
+/* Timeline / Experience */
+body.dark-mode .tl-dot { background: #1c2733; border-color: var(--cyan); }
+body.dark-mode .tl-item:hover .tl-dot { background: var(--cyan); }
+body.dark-mode .tl-title { color: var(--ink); }
+body.dark-mode .tl-desc { color: var(--ink-muted); }
+
+/* Education */
+body.dark-mode .edu-card {
+  background: #161b22;
+  border-color: rgba(14,165,233,.15);
+  box-shadow: 0 4px 30px rgba(0,0,0,.3);
+}
+body.dark-mode .edu-card h3 { color: var(--ink); }
+body.dark-mode .edu-card p { color: var(--ink-muted); }
+body.dark-mode .edu-card .degree { color: var(--ink); }
+body.dark-mode .edu-year { background: rgba(14,165,233,.08); border-color: rgba(14,165,233,.2); color: var(--teal-light); }
+body.dark-mode .edu-card span { background: rgba(14,165,233,.08); border-color: rgba(14,165,233,.15); color: #93c5fd; }
+
+/* Contact */
+body.dark-mode section[id="contact"] { background: #0d1117 !important; }
+body.dark-mode .contact-link {
+  background: #161b22;
+  border-color: rgba(14,165,233,.15);
+  color: var(--ink);
+}
+body.dark-mode .contact-link:hover { border-color: var(--cyan); box-shadow: 0 4px 20px rgba(14,165,233,.15); }
+body.dark-mode .contact-link span { color: var(--ink); }
+body.dark-mode .contact-info p { color: var(--ink-muted); }
+body.dark-mode .contact-title { color: var(--ink) !important; }
+body.dark-mode .contact-form-wrap {
+  background: #161b22;
+  border-color: rgba(14,165,233,.15);
+  box-shadow: 0 4px 30px rgba(0,0,0,.3);
+}
+body.dark-mode .contact-form-wrap h3 { color: var(--ink) !important; }
+body.dark-mode .contact-form-wrap p { color: var(--ink-muted) !important; }
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+  background: #1c2733;
+  border-color: rgba(14,165,233,.2);
+  color: var(--ink);
+}
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder { color: #4a5568; }
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(14,165,233,.12);
+}
+
+/* Brand sections */
+body.dark-mode .brand-section {
+  background: linear-gradient(160deg, #0d1117 0%, #0f1923 50%, #0d1117 100%);
+}
+body.dark-mode .brand-heading { color: var(--ink); }
+body.dark-mode .brand-para { color: var(--ink-muted); }
+body.dark-mode .brand-svc {
+  background: #161b22;
+  border-color: rgba(14,165,233,.12);
+  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+body.dark-mode .brand-svc:hover { border-color: rgba(14,165,233,.3); box-shadow: 0 6px 24px rgba(14,165,233,.1); }
+body.dark-mode .brand-svc h4 { color: var(--ink); }
+body.dark-mode .brand-svc p { color: var(--ink-muted); }
+
+/* Brand consultant section */
+body.dark-mode .brand-consultant-section {
+  background: linear-gradient(160deg, #0d1117 0%, #0f1923 50%, #0d1117 100%);
+}
+body.dark-mode .bc-title { color: var(--ink); }
+body.dark-mode .bc-desc { color: var(--ink-muted); }
+body.dark-mode .bc-svc-item {
+  background: #161b22;
+  border-color: rgba(14,165,233,.12);
+}
+body.dark-mode .bc-svc-item:hover { border-color: rgba(14,165,233,.25); box-shadow: 0 8px 28px rgba(0,0,0,.3); }
+body.dark-mode .bc-svc-item h4 { color: var(--ink); }
+body.dark-mode .bc-svc-item p { color: var(--ink-muted); }
+
+/* Footer */
+body.dark-mode footer { background: #161b22; }
+
+/* Loader */
+body.dark-mode #loader { background: #0d1117; }
+
+body.dark-mode .contact-section { background: #0d1117 !important; }
+body.dark-mode .projects-section { background: #0d1117 !important; }
+body.dark-mode .experience-section { background: #0d1117 !important; }
+
+/* ── COMPREHENSIVE DARK MODE FIXES ── */
+
+/* Section backgrounds that use hardcoded white */
+body.dark-mode .section { background: transparent; }
+body.dark-mode section { background: #0d1117; }
+
+/* Experience / Timeline */
+body.dark-mode .tl-date { color: var(--teal-light); }
+body.dark-mode .tl-company { color: var(--cyan); }
+body.dark-mode .tl-title { color: #e6edf3 !important; font-weight: 700; }
+body.dark-mode .tl-desc { color: #8b949e; }
+body.dark-mode .timeline::before { background: linear-gradient(to bottom, var(--cyan), transparent); }
+
+/* Section title visibility in dark mode */
+body.dark-mode .section-title { color: #e6edf3 !important; }
+body.dark-mode .section-desc { color: #8b949e !important; }
+body.dark-mode .section-label { color: var(--teal-light); }
+
+/* About code block — already dark, but ensure it stays legible */
+body.dark-mode .about-code-block { background: #0d1117; box-shadow: 0 20px 50px rgba(0,0,0,.5); }
+
+/* Skill cards — ensure headings and tags are legible */
+body.dark-mode .skill-card h3 { color: #e6edf3 !important; }
+body.dark-mode .skill-tag { color: #93c5fd !important; }
+
+/* Project cards — body text */
+body.dark-mode .project-body h3 { color: #e6edf3 !important; }
+body.dark-mode .project-body p { color: #8b949e !important; }
+body.dark-mode .project-stack span { background: #1c2733 !important; color: #8b949e !important; border-color: rgba(14,165,233,.15) !important; }
+
+/* Contact */
+body.dark-mode .contact-link svg { color: var(--cyan); }
+
+/* BTT button in dark mode */
+body.dark-mode #btt {
+  box-shadow: 0 4px 20px rgba(14,165,233,.45), 0 0 0 0 rgba(14,165,233,.3);
+}
+
+/* Ensure plain white text sections (e.g. experience body text) are visible */
+body.dark-mode p { color: #8b949e; }
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 { color: #e6edf3; }
+
+/* Prevent override fighting — restore specific bright elements */
+body.dark-mode .dcb-num { color: #fff; }
+body.dark-mode .dcb-label { color: rgba(255,255,255,.55); }
+body.dark-mode .dcb-text h3 { color: #fff; }
+body.dark-mode .dcb-text p { color: rgba(255,255,255,.6); }
+body.dark-mode .loader-name { color: #fff; }
+body.dark-mode footer, body.dark-mode footer * { color: rgba(255,255,255,.5); }
+body.dark-mode footer span { color: var(--cyan); }
+
+/* ───── PARTICLES ───── */
+.particle {
+  position:absolute; width:2px; height:2px; background:var(--cyan);
+  border-radius:50%; opacity:.35; pointer-events:none;
+  animation:particleRise linear infinite;
+}
+@keyframes particleRise {
+  from { transform:translateY(0); opacity:.35; }
+  to { transform:translateY(-80vh); opacity:0; }
+}
+
+/* ───── REVEAL ───── */
+.reveal-el { opacity:0; transform:translateY(28px); transition:all .65s cubic-bezier(.16,1,.3,1); }
+.reveal-el.visible { opacity:1; transform:none; }
+
+/* ───── 3D CANVAS WRAPPER ───── */
+.canvas3d { width:100%; height:300px; position:relative; margin-bottom:3rem; }
+#heroCanvas { position:absolute; inset:0; }
+
+/* ───── BRAND CONSULTANT SECTION ───── */
+.brand-section {
+  padding: 6rem 3rem;
+  background: linear-gradient(160deg, #f8fbff 0%, #f0fafa 50%, #fafaf8 100%);
+  position: relative; overflow: hidden;
+}
+.brand-section::before {
+  content: ''; position: absolute; top: -120px; right: -120px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(14,165,233,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.brand-section::after {
+  content: ''; position: absolute; bottom: -80px; left: -80px;
+  width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,148,136,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.brand-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center; position: relative; z-index: 1;
+}
+.brand-badge {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .4rem 1rem; border-radius: 100px;
+  background: rgba(14,165,233,.08); border: 1px solid rgba(14,165,233,.2);
+  font-size: .78rem; font-family: var(--mono); color: var(--cyan);
+  margin-bottom: 1.4rem; font-weight: 600; letter-spacing: .04em;
+}
+.brand-badge-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--cyan);
+  animation: pulse 2s infinite;
+}
+.brand-heading {
+  font-family: var(--display); font-size: clamp(2rem, 3.5vw, 2.8rem);
+  color: var(--ink); line-height: 1.18; margin-bottom: 1rem;
+}
+.brand-heading em { font-style: italic; color: var(--cyan); }
+.brand-para {
+  color: var(--ink-muted); font-size: 1.02rem; line-height: 1.85;
+  margin-bottom: 2.2rem; max-width: 480px;
+}
+.brand-services-list { display: flex; flex-direction: column; gap: 1.4rem; }
+.brand-svc {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  background: white; border: 1px solid var(--border-soft);
+  border-radius: 14px; padding: 1.2rem 1.4rem;
+  transition: all .3s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,.04);
+}
+.brand-svc:hover {
+  transform: translateX(6px);
+  border-color: var(--border);
+  box-shadow: 0 6px 24px rgba(14,165,233,.1);
+}
+.brand-svc-icon {
+  width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--cyan), var(--teal));
+}
+.brand-svc-icon svg { width: 20px; height: 20px; }
+.brand-svc h4 {
+  font-size: .95rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .3rem;
+}
+.brand-svc p { font-size: .83rem; color: var(--ink-muted); line-height: 1.65; margin: 0; }
+
+/* Illustration wrapper */
+.brand-visual {
+  position: relative; display: flex;
+  align-items: center; justify-content: center;
+}
+.brand-illustration {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 480px;
+  filter: drop-shadow(0 20px 60px rgba(14,165,233,.1));
+  animation: floatY 5s ease-in-out infinite;
+}
+.brand-glow-ring {
+  position: absolute; border-radius: 50%; z-index: 1;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+.brand-glow-1 {
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, rgba(14,165,233,.08), transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+.brand-glow-2 {
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(13,148,136,.05), transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  animation-delay: 2s;
+}
+
+.about-section-wrap { padding:5rem 3rem; }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — Complete Pro Overhaul (Mobile → 4K)
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Global base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100vw; }
+body { overflow-x: hidden; max-width: 100vw; }
+img, svg, video { max-width: 100%; height: auto; display: block; }
+
+/* Prevent any element from causing horizontal overflow */
+.hero, .section, .about, .brand-section, .brand-consultant-section,
+.about-section-wrap, footer, nav { max-width: 100vw; overflow-x: hidden; }
+
+/* ── Large screens ≥1600px ── */
+@media(min-width:1600px){
+  nav { padding:.9rem 5rem; }
+  nav.scrolled { padding:.6rem 5rem; }
+  .hero { padding:9rem 7rem 6rem; gap:6rem; }
+  .section { padding:7rem 6rem; }
+  .about { padding:6rem; margin:0 3rem; gap:6rem; }
+  .about-section-wrap { padding:6rem 4rem; }
+  .brand-section { padding:7rem 5rem; }
+  .brand-consultant-section { padding:7rem 5rem; }
+  .bc-inner { max-width:1400px; }
+  .brand-inner { max-width:1400px; margin:0 auto; }
+}
+
+/* ── Laptop/desktop ≤1280px ── */
+@media(max-width:1280px){
+  nav { padding:.9rem 3rem; }
+  nav.scrolled { padding:.6rem 3rem; }
+  .hero { padding:8rem 4rem 5rem; gap:3rem; }
+  .avatar-frame { width:320px; height:320px; }
+  .about { padding:4rem; gap:4rem; }
+  .section { padding:5.5rem 3.5rem; }
+  .about-section-wrap { padding:5rem 2.5rem; }
+  .brand-section { padding:5.5rem 3rem; }
+  .brand-consultant-section { padding:5.5rem 3rem; }
+}
+
+/* ── Tablet ≤1024px ── */
+@media(max-width:1024px){
+  nav { padding:.9rem 2rem; }
+  nav.scrolled { padding:.6rem 2rem; }
+  .hero { padding:8rem 3rem 5rem; gap:3rem; }
+  .avatar-frame { width:280px; height:280px; }
+  .about { padding:3.5rem 2.5rem; gap:3rem; }
+  .section { padding:5rem 2.5rem; }
+  .about-section-wrap { padding:4.5rem 2rem; }
+  .brand-section { padding:5rem 2.5rem; }
+  .brand-consultant-section { padding:5rem 2.5rem; }
+  .brand-inner { gap:3.5rem; }
+  .bc-inner { gap:3.5rem; }
+  .projects-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+}
+
+/* ── Tablet ≤900px ── */
+@media(max-width:900px){
+  /* Nav */
+  nav { padding:.9rem 1.5rem; }
+  nav.scrolled { padding:.6rem 1.5rem; }
+  .nav-links { display:none !important; }
+  .hamburger { display:flex !important; }
+
+  /* Hero */
+  .hero {
+    grid-template-columns:1fr;
+    padding:7rem 2rem 4rem;
+    gap:2.5rem;
+    text-align:center;
+  }
+  .hero-visual { order:-1; display:flex; justify-content:center; }
+  .hero::before { width:100%; height:50%; top:0; }
+  .hero-btns { justify-content:center; flex-wrap:wrap; }
+  .hero-stats { justify-content:center; gap:2rem; flex-wrap:wrap; }
+  .hero-sub { margin:0 auto 1.8rem; max-width:520px; }
+  .hero-badge { margin:0 auto 1.4rem; }
+  .typewriter-wrap { text-align:center; }
+  .avatar-frame { width:240px; height:240px; }
+
+  /* About */
+  .about { grid-template-columns:1fr; padding:3rem 2rem; margin:0 1rem; gap:2.5rem; }
+  .about-code-block { max-width:100%; overflow-x:auto; }
+
+  /* Brand section */
+  .brand-section { padding:4rem 2rem; }
+  .brand-inner { grid-template-columns:1fr; gap:2.5rem; }
+  .brand-visual { order:-1; display:flex; justify-content:center; }
+  .brand-illustration { max-width:380px; width:100%; }
+
+  /* BC section */
+  .brand-consultant-section { padding:4rem 2rem; }
+  .bc-inner { grid-template-columns:1fr; gap:2.5rem; }
+  .bc-illustration { order:-1; display:flex; justify-content:center; }
+  .bc-svg { max-width:380px; width:100%; }
+  .bc-services { grid-template-columns:1fr 1fr; }
+  .bc-title { font-size:2rem; }
+
+  /* Sections */
+  .section { padding:4rem 2rem; }
+  .section-title { text-align:center; }
+  .section-label { justify-content:center; }
+  .section-desc { text-align:center; margin-left:auto; margin-right:auto; }
+
+  /* Grids */
+  .skills-grid { grid-template-columns:1fr 1fr; gap:1.2rem; }
+  .projects-grid { grid-template-columns:1fr; }
+  .services-grid { grid-template-columns:1fr 1fr; }
+  .proj-tabs { justify-content:center; flex-wrap:wrap; }
+
+  /* Design clients banner */
+  .design-clients-banner { grid-template-columns:1fr; gap:1.5rem; padding:2.5rem 1.5rem; text-align:center; }
+  .dcb-divider { display:none; }
+
+  /* Contact */
+  .contact-wrapper { grid-template-columns:1fr; gap:2rem; }
+
+  /* Timeline */
+  .timeline { padding-left:1.5rem; }
+  .tl-item { padding-left:2rem; }
+
+  /* Stats */
+  .stat-num { font-size:1.7rem; }
+
+  /* About section wrapper */
+  .about-section-wrap { padding:4rem 1.5rem; }
+}
+
+/* ── Mobile ≤600px ── */
+@media(max-width:600px){
+  body { cursor:auto; font-size:15px; }
+  .cur { display:none; }
+
+  /* Nav */
+  nav { padding:.75rem 1rem; }
+  nav.scrolled { padding:.6rem 1rem; }
+  .nav-logo { font-size:1.15rem; }
+  .hamburger { display:flex !important; }
+  .hamburger span { width:20px; }
+
+  /* Loader */
+  .loader-name { font-size:1.6rem; }
+
+  /* Hero — single column, centered, no overflow */
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 5.5rem 1.2rem 3rem;
+    gap: 1.8rem;
+    text-align: center;
+    width: 100%;
+    min-height: auto;
+  }
+  .hero > div { width: 100%; }
+  .hero-heading {
+    font-size: clamp(1.75rem, 7vw, 2.4rem);
+    word-break: break-word;
+    hyphens: auto;
+    white-space: normal;
+  }
+  .hero-sub {
+    font-size: .92rem;
+    line-height: 1.8;
+    padding: 0;
+    max-width: 100%;
+    margin: 0 auto 1.5rem;
+    word-break: break-word;
+  }
+  .typewriter-wrap { font-size:.85rem; overflow:hidden; text-overflow:ellipsis; }
+  .hero-badge { font-size:.72rem; padding:.3rem .8rem; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hero-btns { flex-direction:column; gap:.7rem; align-items:stretch; width:100%; }
+  .btn { justify-content:center; width:100%; font-size:.9rem; padding:.75rem 1.2rem; }
+  .hero-stats { gap:.8rem; flex-wrap:wrap; justify-content:center; width:100%; }
+  .stat-item { flex:1; min-width:72px; text-align:center; }
+  .stat-num { font-size:1.4rem; }
+  .stat-label { font-size:.65rem; }
+  .avatar-frame { width:200px; height:200px; }
+  .float-chip { display:none; }
+
+  /* About */
+  .about-section-wrap { padding:2.5rem 1rem; }
+  .about {
+    grid-template-columns: 1fr;
+    padding: 1.8rem 1rem;
+    margin: 0;
+    border-radius: 16px;
+    gap: 1.8rem;
+    width: 100%;
+  }
+  .about-text, .about-visual { width:100%; }
+  .about-text p { word-break:break-word; }
+  .about-code-block {
+    font-size: .68rem;
+    padding: 1rem;
+    overflow-x: auto;
+    border-radius: 10px;
+    max-width: 100%;
+    word-break: break-all;
+  }
+  .about-code-block pre { white-space: pre-wrap; word-break: break-word; }
+  .about-metric-grid { grid-template-columns:1fr 1fr; gap:.6rem; }
+  .about-metric { padding:.85rem 1rem; }
+  .about-metric .num { font-size:1.5rem; }
+  .about-text h2 { font-size:1.75rem; word-break:break-word; }
+  .about-tags { gap:.4rem; flex-wrap:wrap; }
+  .about-tag { font-size:.72rem; padding:.25rem .6rem; white-space:nowrap; }
+
+  /* Brand section */
+  .brand-section { padding:2.5rem 1rem; }
+  .brand-inner { grid-template-columns:1fr; gap:2rem; }
+  .brand-heading { font-size:clamp(1.6rem,6vw,2.2rem); word-break:break-word; }
+  .brand-para { font-size:.9rem; max-width:100%; word-break:break-word; }
+  .brand-services-list { gap:1rem; width:100%; }
+  .brand-svc { padding:1rem 1.1rem; flex-wrap:nowrap; gap:.8rem; align-items:flex-start; }
+  .brand-svc-icon { width:36px; height:36px; border-radius:9px; flex-shrink:0; }
+  .brand-svc div { min-width:0; flex:1; }
+  .brand-svc h4 { font-size:.88rem; word-break:break-word; }
+  .brand-svc p { font-size:.8rem; word-break:break-word; margin:0; }
+  .brand-illustration { max-width:100%; }
+  .brand-visual { width:100%; }
+  .brand-section::before, .brand-section::after { display:none; }
+
+  /* BC section */
+  .brand-consultant-section { padding:2.5rem 1rem; overflow:hidden; }
+  .bc-inner { grid-template-columns:1fr; gap:1.8rem; }
+  .bc-svg { max-width:100%; height:auto; }
+  .bc-title { font-size:1.6rem; word-break:break-word; }
+  .bc-desc { font-size:.88rem; max-width:100%; word-break:break-word; }
+  .bc-services { grid-template-columns:1fr; gap:.8rem; }
+  .bc-svc-item { padding:.9rem 1rem; gap:.75rem; align-items:flex-start; }
+  .bc-svc-item > div:last-child { min-width:0; flex:1; }
+  .bc-svc-item h4 { font-size:.82rem; word-break:break-word; }
+  .bc-svc-item p { font-size:.76rem; word-break:break-word; margin:0; }
+  .bc-cta { width:100%; justify-content:center; font-size:.88rem; padding:.8rem 1.2rem; }
+  .bc-badge { font-size:.72rem; }
+  .bc-blob { display:none; }
+
+  /* Sections */
+  .section { padding:2.5rem 1rem; }
+  .section-title { font-size:clamp(1.5rem,6vw,2rem); word-break:break-word; }
+  .section-label { font-size:.7rem; }
+  .section-desc { font-size:.88rem; word-break:break-word; }
+
+  /* Skills */
+  .skills-grid { grid-template-columns:1fr; gap:1rem; }
+  .skill-card { padding:1.4rem; }
+  .skill-card h3 { font-size:1rem; }
+  .skill-tags { gap:.35rem; flex-wrap:wrap; }
+  .skill-tag { font-size:.7rem; padding:.18rem .5rem; white-space:nowrap; }
+
+  /* Projects */
+  .projects-grid { grid-template-columns:1fr; gap:1.2rem; }
+  .project-card { border-radius:14px; }
+  .project-body { padding:1.2rem; }
+  .project-body h3 { font-size:.95rem; word-break:break-word; }
+  .project-body p { font-size:.82rem; word-break:break-word; }
+  .project-stack { flex-wrap:wrap; gap:.3rem; }
+  .proj-tabs { gap:.5rem; flex-wrap:wrap; justify-content:center; }
+  .proj-tab { font-size:.8rem; padding:.45rem 1rem; }
+
+  /* Design clients banner */
+  .design-clients-banner { padding:1.8rem 1rem; border-radius:16px; }
+  .dcb-num { font-size:2.2rem; }
+  .dcb-text h3 { font-size:1.2rem; }
+  .dcb-text p { font-size:.82rem; }
+
+  /* Services */
+  .services-grid { grid-template-columns:1fr; gap:1rem; }
+  .svc-card { padding:1.4rem; }
+  .svc-card h3 { font-size:1rem; }
+  .svc-card p { word-break:break-word; }
+
+  /* Timeline */
+  .timeline { padding-left:.8rem; }
+  .timeline::before { left:.4rem; }
+  .tl-item { padding-left:1.8rem; margin-bottom:1.8rem; }
+  .tl-dot { left:-1.8rem; width:12px; height:12px; }
+  .tl-date { font-size:.72rem; }
+  .tl-title { font-size:1rem; word-break:break-word; }
+  .tl-company { font-size:.8rem; }
+  .tl-desc { font-size:.82rem; line-height:1.7; word-break:break-word; }
+
+  /* Education */
+  .edu-card { padding:1.8rem 1.2rem; }
+  .edu-card h3 { font-size:1.1rem; word-break:break-word; }
+  .edu-card p { word-break:break-word; }
+
+  /* Contact */
+  .contact-wrapper { grid-template-columns:1fr; gap:1.2rem; }
+  .contact-form-wrap { padding:1.4rem; border-radius:16px; }
+  .contact-info .contact-title { font-size:1.4rem; word-break:break-word; }
+  .contact-info p { word-break:break-word; }
+  .contact-link { font-size:.82rem; padding:.85rem 1rem; }
+  .contact-links { gap:.8rem; }
+  .form-group { margin-bottom:.85rem; }
+  .form-group input,
+  .form-group textarea { font-size:.9rem; padding:.75rem 1rem; width:100%; max-width:100%; }
+  #submitBtn { font-size:.9rem; width:100%; }
+
+  /* Footer */
+  footer { padding:1.5rem 1rem; font-size:.76rem; text-align:center; word-break:break-word; }
+
+  /* Back to top */
+  #btt { bottom:1rem; right:1rem; width:46px; height:46px; border-radius:50%; }
+  #theme-toggle { bottom:1rem; left:1rem; width:50px; height:25px; }
+
+  /* Fix any remaining text overflow */
+  p, h1, h2, h3, h4, h5, h6, span, a, li {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+}
+
+/* ── Very small ≤420px ── */
+@media(max-width:420px){
+  nav { padding:.7rem .85rem; }
+  .nav-logo { font-size:1rem; }
+  .hero { padding:5rem .9rem 2.5rem; }
+  .hero-heading { font-size:1.7rem; }
+  .avatar-frame { width:170px; height:170px; }
+  .hero-stats { gap:.5rem; }
+  .stat-num { font-size:1.2rem; }
+  .stat-item { min-width:60px; }
+  .bc-title { font-size:1.35rem; }
+  .bc-services { grid-template-columns:1fr; }
+  .brand-heading { font-size:1.45rem; }
+  .about { padding:1.4rem .8rem; }
+  .section { padding:2rem .9rem; }
+  .brand-section { padding:2rem .9rem; }
+  .brand-consultant-section { padding:2rem .9rem; }
+  .contact-form-wrap { padding:1.1rem .85rem; }
+  .skills-grid { grid-template-columns:1fr; }
+  .about-metric-grid { grid-template-columns:1fr 1fr; gap:.5rem; }
+  .about-metric .num { font-size:1.3rem; }
+  .about-metric .lbl { font-size:.65rem; }
+  .design-clients-banner { padding:1.4rem .9rem; }
+  .dcb-num { font-size:1.8rem; }
+  .section-title { font-size:1.4rem; }
+  .contact-link span { font-size:.78rem; }
+  .hero-badge { font-size:.68rem; padding:.28rem .7rem; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE SIDEBAR  (panel + overlay CSS only)
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Overlay ── */
+#mobile-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(13,17,23,0.55);
+  z-index: 1500;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: opacity 0.3s ease;
+}
+#mobile-overlay.visible { display: block; }
+
+/* ── Sidebar panel ── */
+#mobile-sidebar {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 290px;
+  max-width: 88vw;
+  background: #fff;
+  z-index: 1600;
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -10px 0 60px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#mobile-sidebar.is-open { transform: translateX(0); }
+
+/* Rainbow top bar */
+#mobile-sidebar::before {
+  content: '';
+  display: block;
+  height: 4px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--teal) 50%, var(--gold) 100%);
+}
+
+/* ── Sidebar header ── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid rgba(14,165,233,0.1);
+  background: var(--cream);
+}
+.sidebar-logo {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.sidebar-logo span { color: var(--cyan); }
+.sidebar-close {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: white;
+  border: 1.5px solid rgba(14,165,233,0.2);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--ink-muted);
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.sidebar-close:hover, .sidebar-close:active {
+  background: var(--ink); color: #fff; border-color: var(--ink);
+}
+
+/* ── Sidebar nav links ── */
+.sidebar-nav {
+  list-style: none;
+  padding: 1rem 0.9rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+.sidebar-nav li a {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+.sidebar-nav li a:hover, .sidebar-nav li a:active {
+  background: rgba(14,165,233,0.07);
+  color: var(--ink);
+  border-color: rgba(14,165,233,0.15);
+  transform: translateX(4px);
+}
+/* icon bubble */
+.snav-icon {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(13,148,136,0.1));
+  border-radius: 9px;
+  transition: background 0.2s;
+}
+.sidebar-nav li a:hover .snav-icon, .sidebar-nav li a:active .snav-icon {
+  background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(13,148,136,0.2));
+}
+/* Hire Me CTA */
+.sidebar-nav li a.sidebar-cta {
+  background: linear-gradient(135deg, var(--ink) 0%, #1c2733 100%);
+  color: #fff !important;
+  justify-content: center;
+  margin-top: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(13,17,23,0.18);
+  padding: 0.9rem 1rem;
+}
+.sidebar-nav li a.sidebar-cta:hover, .sidebar-nav li a.sidebar-cta:active {
+  background: linear-gradient(135deg, var(--blue), var(--slate));
+  transform: none;
+  box-shadow: 0 6px 20px rgba(22,96,136,0.3);
+}
+
+/* ── Sidebar footer ── */
+.sidebar-footer {
+  padding: 1rem 1.4rem;
+  border-top: 1px solid rgba(14,165,233,0.1);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  text-align: center;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  background: var(--cream);
+}
+
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-name">Mahnoor Arshad</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- Cursor -->
+<div class="cur" id="curDot"><div class="cur-dot"></div></div>
+<div class="cur" id="curRing"><div class="cur-ring"></div></div>
+
+<!-- Nav -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Mahnoor<span>.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#branding">Branding</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Open menu" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Sidebar Overlay -->
+<div id="mobile-overlay"></div>
+
+<!-- Mobile Sidebar Panel -->
+<div id="mobile-sidebar" role="dialog" aria-label="Navigation menu">
+  <div class="sidebar-header">
+    <a href="#hero" class="sidebar-logo">Mahnoor<span>.</span></a>
+    <div class="sidebar-close" id="sidebar-close" aria-label="Close menu">&#10005;</div>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="#about">
+      <span class="snav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="#0ea5e9" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>About
+    </a></li>
+    <li><a href="#branding">
+      <span class="snav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#0d9488" stroke-width="2"/></svg>
+      </span>Branding
+    </a></li>
+    <li><a href="#skills">
+      <span class="snav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>Skills
+    </a></li>
+    <li><a href="#projects">
+      <span class="snav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#0d9488" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>Projects
+    </a></li>
+    <li><a href="#experience">
+      <span class="snav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" stroke="#0ea5e9" stroke-width="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="#0ea5e9" stroke-width="2"/></svg>
+      </span>Experience
+    </a></li>
+    <li><a href="#contact" class="sidebar-cta">✉&nbsp; Hire Me</a></li>
+  </ul>
+  <div class="sidebar-footer">mahnoor.arshad &nbsp;·&nbsp; portfolio ✦</div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div id="particles-hero" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="hero-badge">
+      Available for opportunities
+    </div>
+    <h1 class="hero-heading">
+      Data & Design<br><em>Made Simple</em>
+    </h1>
+    <p class="hero-sub">
+      I turn raw data into <strong>clear decisions</strong> and ideas into <strong>stunning visuals</strong> — with 3+ years of graphic design experience, I help brands look great and communicate with impact. From ML models to brand identities, I build things that work.
+    </p>
+    <div class="typewriter-wrap">
+      <span id="typewriter"></span>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        View Projects
+      </a>
+      <a href="#contact" class="btn btn-secondary">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/><polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/></svg>
+        Contact Me
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="cnt1">0</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="cnt2">0+</div>
+        <div class="stat-label">Design Clients</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="cnt3">0+</div>
+        <div class="stat-label">Years in Design</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Visual -->
+  <div class="hero-visual" style="position:relative;z-index:1;">
+    <div class="avatar-frame">
+      <div class="avatar-glow"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring-2"></div>
+      <div class="avatar-svg">
+        <!-- Illustrated avatar — warm, natural, hand-crafted feel -->
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#c7e8ef"/>
+              <stop offset="100%" style="stop-color:#a8d5de"/>
+            </linearGradient>
+            <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#f7cfa4"/>
+              <stop offset="100%" style="stop-color:#e8a86a"/>
+            </linearGradient>
+            <linearGradient id="clothGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#0ea5e9"/>
+              <stop offset="100%" style="stop-color:#0d9488"/>
+            </linearGradient>
+            <linearGradient id="hijabDeep" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1e2a4a"/>
+              <stop offset="100%" style="stop-color:#101828"/>
+            </linearGradient>
+            <radialGradient id="cheekL" cx="40%" cy="60%" r="50%">
+              <stop offset="0%" style="stop-color:#f0907a;stop-opacity:0.22"/>
+              <stop offset="100%" style="stop-color:#f0907a;stop-opacity:0"/>
+            </radialGradient>
+            <radialGradient id="cheekR" cx="60%" cy="60%" r="50%">
+              <stop offset="0%" style="stop-color:#f0907a;stop-opacity:0.22"/>
+              <stop offset="100%" style="stop-color:#f0907a;stop-opacity:0"/>
+            </radialGradient>
+            <clipPath id="circleClip">
+              <circle cx="160" cy="160" r="160"/>
+            </clipPath>
+            <filter id="faceShadow">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#c8804a" flood-opacity="0.18"/>
+            </filter>
+          </defs>
+
+          <!-- Background circle -->
+          <circle cx="160" cy="160" r="160" fill="url(#bgGrad)"/>
+
+          <!-- Subtle dot-grid pattern -->
+          <g clip-path="url(#circleClip)" opacity=".12">
+            <line x1="40" y1="0" x2="40" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="80" y1="0" x2="80" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="120" y1="0" x2="120" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="160" y1="0" x2="160" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="200" y1="0" x2="200" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="240" y1="0" x2="240" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="280" y1="0" x2="280" y2="320" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="40" x2="320" y2="40" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="80" x2="320" y2="80" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="120" x2="320" y2="120" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="160" x2="320" y2="160" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="200" x2="320" y2="200" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="240" x2="320" y2="240" stroke="#0ea5e9" stroke-width="1"/>
+            <line x1="0" y1="280" x2="320" y2="280" stroke="#0ea5e9" stroke-width="1"/>
+          </g>
+
+          <!-- Shoulders / body -->
+          <path d="M30 320 Q60 285 100 272 Q130 262 160 260 Q190 262 220 272 Q260 285 290 320 Z" fill="url(#clothGrad)"/>
+          <!-- Collar area -->
+          <path d="M138 268 L160 280 L182 268 L178 260 L160 272 L142 260 Z" fill="white" opacity=".75"/>
+          <!-- Neck -->
+          <rect x="149" y="238" width="22" height="30" rx="10" fill="url(#skinGrad)"/>
+
+          <!-- ── HIJAB LAYERS (back then front wrap) ── -->
+          <!-- Large drape behind shoulders -->
+          <path d="M72 220 Q68 255 78 285 Q105 275 140 268 L140 255 Q110 252 94 238 Q82 228 78 215 Z" fill="url(#hijabDeep)"/>
+          <path d="M248 220 Q252 255 242 285 Q215 275 180 268 L180 255 Q210 252 226 238 Q238 228 242 215 Z" fill="url(#hijabDeep)"/>
+          <!-- Head cap -->
+          <ellipse cx="160" cy="168" rx="84" ry="60" fill="url(#hijabDeep)"/>
+          <!-- Forehead wrap coming forward -->
+          <path d="M80 190 Q80 145 100 128 Q125 112 160 110 Q195 112 220 128 Q240 145 240 190 Q236 162 218 148 Q195 134 160 132 Q125 134 102 148 Q84 162 80 190 Z" fill="#1e2a4a"/>
+          <!-- Side drape left (wraps under chin) -->
+          <path d="M80 195 Q76 225 80 250 Q82 260 94 265 Q94 255 90 240 Q86 225 82 208 Z" fill="#0f1828"/>
+          <!-- Side drape right -->
+          <path d="M240 195 Q244 225 240 250 Q238 260 226 265 Q226 255 230 240 Q234 225 238 208 Z" fill="#0f1828"/>
+          <!-- Under-chin wrap -->
+          <path d="M96 235 Q130 248 160 250 Q190 248 224 235 Q228 244 226 258 Q195 270 160 272 Q125 270 94 258 Q92 244 96 235 Z" fill="#0f1828"/>
+
+          <!-- ── FACE ── -->
+          <ellipse cx="160" cy="196" rx="70" ry="74" fill="url(#skinGrad)" filter="url(#faceShadow)"/>
+
+          <!-- Cheek blush — soft and natural -->
+          <ellipse cx="126" cy="215" rx="22" ry="14" fill="url(#cheekL)"/>
+          <ellipse cx="194" cy="215" rx="22" ry="14" fill="url(#cheekR)"/>
+
+          <!-- Eyebrows — naturally arched, slightly asymmetric like real people -->
+          <path d="M120 182 Q132 176 144 179" stroke="#3d2008" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <path d="M176 179 Q188 176 200 183" stroke="#3d2008" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+
+          <!-- Glasses — cyan to match theme -->
+          <rect x="116" y="186" width="28" height="20" rx="7" fill="rgba(186,232,250,.18)" stroke="#0ea5e9" stroke-width="1.8"/>
+          <rect x="176" y="186" width="28" height="20" rx="7" fill="rgba(186,232,250,.18)" stroke="#0ea5e9" stroke-width="1.8"/>
+          <line x1="144" y1="195" x2="176" y2="195" stroke="#0ea5e9" stroke-width="1.6"/>
+          <line x1="112" y1="195" x2="116" y2="195" stroke="#0ea5e9" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="204" y1="195" x2="208" y2="195" stroke="#0ea5e9" stroke-width="1.6" stroke-linecap="round"/>
+
+          <!-- Eyes — warm dark brown, alive looking -->
+          <ellipse cx="130" cy="196" rx="9" ry="9" fill="white"/>
+          <ellipse cx="190" cy="196" rx="9" ry="9" fill="white"/>
+          <!-- iris -->
+          <ellipse cx="130" cy="197" rx="6.5" ry="6.5" fill="#3d1c05"/>
+          <ellipse cx="190" cy="197" rx="6.5" ry="6.5" fill="#3d1c05"/>
+          <!-- pupil -->
+          <ellipse cx="130" cy="198" rx="4" ry="4" fill="#1a0800"/>
+          <ellipse cx="190" cy="198" rx="4" ry="4" fill="#1a0800"/>
+          <!-- catchlight — tiny, not overdone -->
+          <ellipse cx="133" cy="194" rx="2" ry="2.2" fill="white" opacity=".75"/>
+          <ellipse cx="193" cy="194" rx="2" ry="2.2" fill="white" opacity=".75"/>
+
+          <!-- Nose — subtle, just two small nostrils suggested -->
+          <path d="M155 210 Q153 222 155 227 Q158 230 160 229 Q162 230 165 227 Q167 222 165 210" stroke="#c8854a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <path d="M155 227 Q158 230 160 229 Q162 230 165 227" stroke="#c8854a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+          <!-- Smile — warm, genuine, slight teeth hint -->
+          <path d="M144 238 Q155 250 160 251 Q165 250 176 238" stroke="#b86a42" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- tiny teeth suggestion -->
+          <path d="M150 242 Q160 248 170 242" fill="white" opacity=".35"/>
+
+          <!-- Small stud earrings — teal to match palette -->
+          <circle cx="90" cy="210" r="4" fill="#0ea5e9" opacity=".85"/>
+          <circle cx="90" cy="210" r="2" fill="white" opacity=".4"/>
+          <circle cx="230" cy="210" r="4" fill="#0ea5e9" opacity=".85"/>
+          <circle cx="230" cy="210" r="2" fill="white" opacity=".4"/>
+
+          <!-- Laptop -->
+          <rect x="100" y="285" width="120" height="34" rx="5" fill="#0d1117"/>
+          <rect x="105" y="289" width="110" height="26" rx="3" fill="#1c2733"/>
+          <!-- Code lines on screen — matches the site's code style -->
+          <rect x="110" y="293" width="38" height="2.5" rx="1.2" fill="#0ea5e9" opacity=".8"/>
+          <rect x="110" y="298" width="28" height="2.5" rx="1.2" fill="#d2a8ff" opacity=".75"/>
+          <rect x="113" y="303" width="46" height="2.5" rx="1.2" fill="#a5d6ff" opacity=".7"/>
+          <rect x="110" y="308" width="32" height="2.5" rx="1.2" fill="#ff7b72" opacity=".75"/>
+          <rect x="155" y="293" width="42" height="2.5" rx="1.2" fill="#79c0ff" opacity=".65"/>
+          <rect x="155" y="298" width="34" height="2.5" rx="1.2" fill="#ffa657" opacity=".65"/>
+          <rect x="155" y="303" width="38" height="2.5" rx="1.2" fill="#d2a8ff" opacity=".6"/>
+          <rect x="155" y="308" width="28" height="2.5" rx="1.2" fill="#0ea5e9" opacity=".65"/>
+        </svg>
+      </div>
+
+      <!-- Floating chips -->
+      <div class="float-chip chip1">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ea5e9" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="#0ea5e9" stroke-width="2"/></svg>
+        Python · Data
+      </div>
+      <div class="float-chip chip2">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Branding
+      </div>
+      <div class="float-chip chip3">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21 21H4.6C3.72 21 3 20.28 3 19.4V3" stroke="#f59e0b" stroke-width="2"/><path d="M7 14l4-4 4 4 4-6" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>
+        Data Viz
+      </div>
+      <div class="float-chip chip4">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="13.5" cy="6.5" r="2.5" stroke="#0ea5e9" stroke-width="2"/><path d="M3 20c0-4 3.5-7 8-7s8 3 8 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/><path d="M18 9l2 2-2 2M20 11h-4" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Graphic Designer
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="about-section-wrap">
+  <div class="about reveal-el">
+    <div class="about-text">
+      <div class="section-label">About Me</div>
+      <h2 class="section-title" style="margin-bottom:1.5rem;">Turning Data into<br>Decisions</h2>
+      <p>I'm <strong>Mahnoor Arshad</strong>, an aspiring Data Scientist and Graphic Designer based in Sargodha, Pakistan, currently pursuing a Bachelor's in Software Engineering at the <strong>University of Sargodha</strong> (2023–2027).</p>
+      <p>With <strong>3+ years of hands-on experience in Graphic Design</strong>, I've worked with clients from UAE to the US — creating brand identities, logos, social media content, and visual assets that make businesses stand out. I've collaborated with companies like <strong>Law Bridge (UAE)</strong>, <strong>Plivix</strong>, and <strong>Sellagent (US)</strong>.</p>
+      <p>On the data side, I'm passionate about <strong>machine learning, Python, and turning messy data into clear decisions</strong>. I enjoy building projects that combine technical skill with creative thinking.</p>
+      <p>I care about delivering work that is <strong>practical, beautiful, and genuinely useful</strong> — whether it's a predictive model or a brand identity that clients fall in love with.</p>
+      <div class="about-tags">
+        <span class="about-tag">Python</span>
+        <span class="about-tag">Machine Learning</span>
+        <span class="about-tag">Data Analysis</span>
+        <span class="about-tag">Data Visualization</span>
+        <span class="about-tag">Data Cleaning</span>
+        <span class="about-tag">Graphic Design</span>
+        <span class="about-tag">Branding</span>
+        <span class="about-tag">Canva · Figma</span>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-code-block">
+        <div class="code-bar">
+          <div class="code-dot r"></div>
+          <div class="code-dot y"></div>
+          <div class="code-dot g"></div>
+        </div>
+        <div class="code-content">
+<pre><span class="c-comment"># mahnoor_profile.py</span>
+
+<span class="c-keyword">class</span> <span class="c-fn">MahnoorArshad</span>:
+  <span class="c-var">name</span>    = <span class="c-string">"Mahnoor Arshad"</span>
+  <span class="c-var">role</span>    = <span class="c-string">"Data Scientist & Graphic Designer"</span>
+  <span class="c-var">level</span>   = <span class="c-string">"Intermediate | Always Learning"</span>
+  <span class="c-var">location</span> = <span class="c-string">"Sargodha, Pakistan"</span>
+
+  <span class="c-var">skills</span> = [
+    <span class="c-string">"Python"</span>, <span class="c-string">"ML/DL"</span>, <span class="c-string">"NLP"</span>,
+    <span class="c-string">"Data Viz"</span>, <span class="c-string">"SQL"</span>,
+    <span class="c-string">"Graphic Design"</span>
+  ]
+
+  <span class="c-keyword">def</span> <span class="c-fn">get_value</span>(<span class="c-var">self</span>):
+    <span class="c-keyword">return</span> {
+      <span class="c-string">"projects"</span>: <span class="c-num">15</span><span class="c-text">+</span>,
+      <span class="c-string">"clients"</span>: <span class="c-num">20</span><span class="c-text">+</span>,
+      <span class="c-string">"passion"</span>: <span class="c-string">"∞"</span>
+    }
+
+<span class="c-var">me</span> = <span class="c-fn">MahnoorArshad</span>()
+<span class="c-fn">print</span>(me.get_value())</pre>
+        </div>
+      </div>
+      <div class="about-metric-grid">
+        <div class="about-metric"><div class="num">3+</div><div class="lbl">Years in Design</div></div>
+        <div class="about-metric"><div class="num">50+</div><div class="lbl">Design Clients</div></div>
+        <div class="about-metric"><div class="num">15+</div><div class="lbl">Data Projects</div></div>
+        <div class="about-metric"><div class="num">⭐ 5.0</div><div class="lbl">Client Rating</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Brand Consultant Section -->
+<section id="branding" class="brand-section">
+  <div class="brand-inner">
+
+    <!-- Left: Text Content -->
+    <div class="brand-content">
+      <div class="brand-badge">
+        <span class="brand-badge-dot"></span>
+        Brand Consultant
+      </div>
+      <h2 class="brand-heading">I Help Startups <em>Launch Strong</em> & Grow Smarter</h2>
+      <p class="brand-para">Beyond design, I guide early-stage startups through the most important phase — building a brand that people trust, follow, and buy from. From day one strategy to consistent social presence, I cover it all.</p>
+
+      <div class="brand-services-list">
+        <div class="brand-svc">
+          <div class="brand-svc-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h4>Startup Brand Strategy</h4>
+            <p>Defining your brand voice, visual identity, target audience, and competitive positioning — so your startup stands out from day one.</p>
+          </div>
+        </div>
+        <div class="brand-svc">
+          <div class="brand-svc-icon" style="background:linear-gradient(135deg,#0d9488,#2dd4bf)">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h4>Marketing Strategy</h4>
+            <p>Planning content calendars, campaigns, and growth strategies that attract real customers without a big budget.</p>
+          </div>
+        </div>
+        <div class="brand-svc">
+          <div class="brand-svc-icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="white" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="white" stroke-width="2"/></svg>
+          </div>
+          <div>
+            <h4>Social Media Handling</h4>
+            <p>Managing Instagram, LinkedIn & Facebook — consistent posting, engaging captions, and branded visuals that build a loyal following.</p>
+          </div>
+        </div>
+        <div class="brand-svc">
+          <div class="brand-svc-icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="white" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Content & Posting Plan</h4>
+            <p>Weekly/monthly content plans with post ideas, hashtag strategy, and visual templates tailored to your brand's tone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Illustration -->
+    <div class="brand-visual">
+      <div class="brand-illustration">
+        <svg viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <defs>
+            <linearGradient id="bgCircle" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(14,165,233,.08)"/>
+              <stop offset="100%" style="stop-color:rgba(13,148,136,.06)"/>
+            </linearGradient>
+            <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#0ea5e9"/>
+              <stop offset="100%" style="stop-color:#0d9488"/>
+            </linearGradient>
+            <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#8b5cf6"/>
+              <stop offset="100%" style="stop-color:#0ea5e9"/>
+            </linearGradient>
+            <linearGradient id="cardGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#f59e0b"/>
+              <stop offset="100%" style="stop-color:#f97316"/>
+            </linearGradient>
+            <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="130%">
+              <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(0,0,0,.12)"/>
+            </filter>
+            <filter id="softShadow" x="-5%" y="-5%" width="110%" height="120%">
+              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,.08)"/>
+            </filter>
+          </defs>
+
+          <!-- Background circle glow -->
+          <circle cx="260" cy="280" r="210" fill="url(#bgCircle)"/>
+          <circle cx="260" cy="280" r="175" fill="none" stroke="rgba(14,165,233,.06)" stroke-width="1.5" stroke-dasharray="6,6"/>
+
+          <!-- === MAIN BRAND DASHBOARD CARD === -->
+          <rect x="60" y="40" width="400" height="220" rx="20" fill="white" filter="url(#cardShadow)"/>
+          <!-- Card top gradient bar -->
+          <rect x="60" y="40" width="400" height="6" rx="3" fill="url(#cardGrad1)"/>
+          <!-- Card header -->
+          <text x="90" y="85" fill="#0d1117" font-size="13" font-family="sans-serif" font-weight="700">Brand Dashboard</text>
+          <rect x="390" y="68" width="48" height="22" rx="11" fill="rgba(14,165,233,.1)"/>
+          <text x="404" y="83" fill="#0ea5e9" font-size="9" font-family="monospace" font-weight="600">LIVE</text>
+          <circle cx="399" cy="79" r="3" fill="#0ea5e9"><animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/></circle>
+
+          <!-- Mini bar chart -->
+          <rect x="90" y="105" width="18" height="55" rx="5" fill="rgba(14,165,233,.2)"/>
+          <rect x="114" y="125" width="18" height="35" rx="5" fill="rgba(14,165,233,.3)"/>
+          <rect x="138" y="95" width="18" height="65" rx="5" fill="rgba(14,165,233,.5)"/>
+          <rect x="162" y="110" width="18" height="50" rx="5" fill="rgba(14,165,233,.7)"/>
+          <rect x="186" y="88" width="18" height="72" rx="5" fill="#0ea5e9"/>
+          <rect x="210" y="100" width="18" height="60" rx="5" fill="rgba(14,165,233,.8)"/>
+          <line x1="88" y1="162" x2="240" y2="162" stroke="#f1f5f9" stroke-width="1"/>
+
+          <!-- Stats right side -->
+          <rect x="268" y="100" width="160" height="65" rx="12" fill="#f8fafc"/>
+          <text x="284" y="122" fill="#64748b" font-size="9" font-family="sans-serif">Reach this month</text>
+          <text x="284" y="142" fill="#0d1117" font-size="20" font-family="sans-serif" font-weight="800">48.2K</text>
+          <text x="284" y="158" fill="#0d9488" font-size="9" font-family="sans-serif" font-weight="600">↑ 23% vs last month</text>
+
+          <!-- Bottom stat pills -->
+          <rect x="90" y="182" width="90" height="28" rx="8" fill="rgba(14,165,233,.07)" stroke="rgba(14,165,233,.2)" stroke-width="1"/>
+          <text x="106" y="196" fill="#0d1117" font-size="8" font-family="sans-serif" font-weight="600">👥 Followers</text>
+          <text x="106" y="207" fill="#0ea5e9" font-size="9" font-family="monospace" font-weight="700">2,840</text>
+
+          <rect x="192" y="182" width="90" height="28" rx="8" fill="rgba(13,148,136,.07)" stroke="rgba(13,148,136,.2)" stroke-width="1"/>
+          <text x="208" y="196" fill="#0d1117" font-size="8" font-family="sans-serif" font-weight="600">❤️ Engagement</text>
+          <text x="208" y="207" fill="#0d9488" font-size="9" font-family="monospace" font-weight="700">6.4%</text>
+
+          <rect x="294" y="182" width="90" height="28" rx="8" fill="rgba(245,158,11,.07)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+          <text x="310" y="196" fill="#0d1117" font-size="8" font-family="sans-serif" font-weight="600">📈 Growth</text>
+          <text x="310" y="207" fill="#f59e0b" font-size="9" font-family="monospace" font-weight="700">+310/wk</text>
+
+          <!-- === CONTENT CALENDAR CARD === -->
+          <rect x="60" y="285" width="185" height="160" rx="16" fill="white" filter="url(#softShadow)"/>
+          <rect x="60" y="285" width="185" height="5" rx="3" fill="url(#cardGrad3)"/>
+          <text x="80" y="315" fill="#0d1117" font-size="10" font-family="sans-serif" font-weight="700">Content Calendar</text>
+
+          <!-- Calendar grid -->
+          <g fill="#94a3b8" font-size="7" font-family="sans-serif" text-anchor="middle">
+            <text x="88" y="332">M</text><text x="104" y="332">T</text><text x="120" y="332">W</text>
+            <text x="136" y="332">T</text><text x="152" y="332">F</text><text x="168" y="332">S</text><text x="184" y="332">S</text>
+          </g>
+          <!-- Week 1 -->
+          <circle cx="88" cy="346" r="7" fill="#0ea5e9" opacity=".9"/>
+          <circle cx="104" cy="346" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="120" cy="346" r="7" fill="#f59e0b" opacity=".9"/>
+          <circle cx="136" cy="346" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="152" cy="346" r="7" fill="#0d9488" opacity=".9"/>
+          <circle cx="168" cy="346" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="184" cy="346" r="7" fill="#8b5cf6" opacity=".9"/>
+          <!-- Week 2 -->
+          <circle cx="88" cy="364" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="104" cy="364" r="7" fill="#0ea5e9" opacity=".7"/>
+          <circle cx="120" cy="364" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="136" cy="364" r="7" fill="#f59e0b" opacity=".8"/>
+          <circle cx="152" cy="364" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="168" cy="364" r="7" fill="#0d9488" opacity=".7"/>
+          <circle cx="184" cy="364" r="7" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+
+          <g font-size="7" font-family="sans-serif">
+            <rect x="75" y="380" width="8" height="8" rx="2" fill="#0ea5e9"/>
+            <text x="86" y="388" fill="#64748b">Post</text>
+            <rect x="105" y="380" width="8" height="8" rx="2" fill="#f59e0b"/>
+            <text x="116" y="388" fill="#64748b">Story</text>
+            <rect x="135" y="380" width="8" height="8" rx="2" fill="#8b5cf6"/>
+            <text x="146" y="388" fill="#64748b">Reel</text>
+            <rect x="162" y="380" width="8" height="8" rx="2" fill="#0d9488"/>
+            <text x="173" y="388" fill="#64748b">Blog</text>
+          </g>
+
+          <text x="88" y="430" fill="#94a3b8" font-size="8" font-family="sans-serif" text-anchor="middle">12 posts planned this month</text>
+
+          <!-- === SOCIAL PLATFORMS CARD === -->
+          <rect x="265" y="285" width="195" height="160" rx="16" fill="white" filter="url(#softShadow)"/>
+          <rect x="265" y="285" width="195" height="5" rx="3" fill="url(#cardGrad2)"/>
+          <text x="285" y="315" fill="#0d1117" font-size="10" font-family="sans-serif" font-weight="700">Social Platforms</text>
+
+          <!-- Platform rows -->
+          <!-- Instagram -->
+          <rect x="282" y="326" width="160" height="28" rx="8" fill="#f8fafc"/>
+          <rect x="289" y="333" width="14" height="14" rx="4" fill="url(#cardGrad3)"/>
+          <text x="310" y="344" fill="#0d1117" font-size="9" font-family="sans-serif" font-weight="600">Instagram</text>
+          <text x="395" y="344" fill="#0d9488" font-size="8" font-family="sans-serif" font-weight="600">1.2K ↑</text>
+
+          <!-- LinkedIn -->
+          <rect x="282" y="361" width="160" height="28" rx="8" fill="#f8fafc"/>
+          <rect x="289" y="368" width="14" height="14" rx="3" fill="#0ea5e9"/>
+          <text x="310" y="379" fill="#0d1117" font-size="9" font-family="sans-serif" font-weight="600">LinkedIn</text>
+          <text x="395" y="379" fill="#0d9488" font-size="8" font-family="sans-serif" font-weight="600">840 ↑</text>
+
+          <!-- Facebook -->
+          <rect x="282" y="396" width="160" height="28" rx="8" fill="#f8fafc"/>
+          <rect x="289" y="403" width="14" height="14" rx="3" fill="#8b5cf6"/>
+          <text x="310" y="414" fill="#0d1117" font-size="9" font-family="sans-serif" font-weight="600">Facebook</text>
+          <text x="395" y="414" fill="#0d9488" font-size="8" font-family="sans-serif" font-weight="600">620 ↑</text>
+
+          <text x="363" y="438" fill="#94a3b8" font-size="8" font-family="sans-serif" text-anchor="middle">All platforms growing 📈</text>
+
+          <!-- === FLOATING TAG CHIPS === -->
+          <rect x="85" y="468" width="120" height="30" rx="15" fill="white" filter="url(#softShadow)" stroke="rgba(14,165,233,.15)" stroke-width="1">
+            <animate attributeName="y" values="468;460;468" dur="3s" repeatCount="indefinite"/>
+          </rect>
+          <text x="145" y="488" fill="#0ea5e9" font-size="9" font-family="sans-serif" font-weight="600" text-anchor="middle">
+            <animate attributeName="y" values="488;480;488" dur="3s" repeatCount="indefinite"/>
+            🎨 Brand Identity
+          </text>
+
+          <rect x="225" y="480" width="120" height="30" rx="15" fill="white" filter="url(#softShadow)" stroke="rgba(245,158,11,.15)" stroke-width="1">
+            <animate attributeName="y" values="480;472;480" dur="3.5s" repeatCount="indefinite"/>
+          </rect>
+          <text x="285" y="500" fill="#f59e0b" font-size="9" font-family="sans-serif" font-weight="600" text-anchor="middle">
+            <animate attributeName="y" values="500;492;500" dur="3.5s" repeatCount="indefinite"/>
+            📱 Social Media
+          </text>
+
+          <rect x="355" y="468" width="110" height="30" rx="15" fill="white" filter="url(#softShadow)" stroke="rgba(139,92,246,.15)" stroke-width="1">
+            <animate attributeName="y" values="468;460;468" dur="4s" repeatCount="indefinite"/>
+          </rect>
+          <text x="410" y="488" fill="#8b5cf6" font-size="9" font-family="sans-serif" font-weight="600" text-anchor="middle">
+            <animate attributeName="y" values="488;480;488" dur="4s" repeatCount="indefinite"/>
+            🚀 Growth Plan
+          </text>
+
+          <!-- Connecting dots decoration -->
+          <circle cx="260" cy="520" r="3" fill="#0ea5e9" opacity=".4"/>
+          <circle cx="280" cy="515" r="2" fill="#0d9488" opacity=".3"/>
+          <circle cx="240" cy="518" r="2" fill="#f59e0b" opacity=".35"/>
+          <circle cx="300" cy="522" r="2.5" fill="#8b5cf6" opacity=".3"/>
+        </svg>
+      </div>
+
+      <!-- Glow rings behind illustration -->
+      <div class="brand-glow-ring brand-glow-1"></div>
+      <div class="brand-glow-ring brand-glow-2"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Brand Consultant -->
+<section id="branding" class="brand-consultant-section">
+
+  <!-- Background decorative blobs -->
+  <div class="bc-blob bc-blob1"></div>
+  <div class="bc-blob bc-blob2"></div>
+
+  <div class="bc-inner">
+
+    <!-- Left: Text content -->
+    <div class="bc-content">
+      <div class="bc-badge">
+        <span class="bc-badge-dot"></span> Brand Consultant
+      </div>
+      <h2 class="bc-title">From Idea to<br><span>Brand Identity</span></h2>
+      <p class="bc-desc">Starting a business is exciting — but building a brand that people <em>remember</em> takes strategy. I help startups find their voice, define their look, and show up consistently across every platform.</p>
+
+      <div class="bc-services">
+
+        <div class="bc-svc-item">
+          <div class="bc-svc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Startup Brand Strategy</h4>
+            <p>Define your mission, target audience, and positioning. Build a brand that speaks to the right people from day one.</p>
+          </div>
+        </div>
+
+        <div class="bc-svc-item">
+          <div class="bc-svc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Social Media Management</h4>
+            <p>Content planning, posting schedules, and platform strategy — so your brand stays active, consistent, and engaging.</p>
+          </div>
+        </div>
+
+        <div class="bc-svc-item">
+          <div class="bc-svc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Marketing Strategy</h4>
+            <p>Organic growth plans, content calendars, and campaign ideas tailored to your budget and business goals.</p>
+          </div>
+        </div>
+
+        <div class="bc-svc-item">
+          <div class="bc-svc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Visual Identity & Posting</h4>
+            <p>Logo, color palette, post templates, and branded content designed to look professional and attract your ideal customers.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <button onclick="openBrandContact()" class="bc-cta">
+        Let's Build Your Brand
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Right: Illustration -->
+    <div class="bc-illustration">
+      <svg viewBox="0 0 520 480" xmlns="http://www.w3.org/2000/svg" class="bc-svg">
+        <defs>
+          <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:.18"/>
+            <stop offset="100%" style="stop-color:#0d9488;stop-opacity:.08"/>
+          </linearGradient>
+          <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:.18"/>
+            <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:.08"/>
+          </linearGradient>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0ea5e9"/>
+            <stop offset="100%" style="stop-color:#0d9488"/>
+          </linearGradient>
+          <linearGradient id="barGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#0ea5e9"/>
+            <stop offset="100%" style="stop-color:#0d9488"/>
+          </linearGradient>
+          <filter id="cardShadow">
+            <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(0,0,0,.10)"/>
+          </filter>
+          <filter id="softShadow">
+            <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="rgba(14,165,233,.15)"/>
+          </filter>
+        </defs>
+
+        <!-- ── BACKGROUND CIRCLES ── -->
+        <circle cx="420" cy="80" r="120" fill="rgba(14,165,233,.04)" stroke="rgba(14,165,233,.08)" stroke-width="1"/>
+        <circle cx="420" cy="80" r="80" fill="rgba(14,165,233,.05)"/>
+        <circle cx="100" cy="390" r="90" fill="rgba(13,148,136,.04)" stroke="rgba(13,148,136,.07)" stroke-width="1"/>
+
+        <!-- ── MAIN BRAND CARD ── -->
+        <rect x="60" y="60" width="260" height="170" rx="20" fill="white" filter="url(#cardShadow)" stroke="rgba(14,165,233,.12)" stroke-width="1"/>
+        <!-- card top bar -->
+        <rect x="60" y="60" width="260" height="5" rx="3" fill="url(#logoGrad)"/>
+        <!-- brand logo mock -->
+        <rect x="84" y="85" width="40" height="40" rx="10" fill="url(#logoGrad)" opacity=".9"/>
+        <text x="104" y="111" fill="white" font-size="20" font-family="Georgia,serif" text-anchor="middle" font-weight="700">B</text>
+        <!-- brand name text -->
+        <rect x="136" y="92" width="90" height="9" rx="4" fill="#0d1117" opacity=".8"/>
+        <rect x="136" y="107" width="60" height="6" rx="3" fill="#4a6fa5" opacity=".5"/>
+        <!-- tagline -->
+        <rect x="84" y="142" width="210" height="6" rx="3" fill="rgba(14,165,233,.2)"/>
+        <rect x="84" y="155" width="160" height="5" rx="2.5" fill="rgba(14,165,233,.12)"/>
+        <rect x="84" y="166" width="180" height="5" rx="2.5" fill="rgba(14,165,233,.10)"/>
+        <!-- color palette row -->
+        <circle cx="90" cy="203" r="10" fill="#0ea5e9"/>
+        <circle cx="114" cy="203" r="10" fill="#0d9488"/>
+        <circle cx="138" cy="203" r="10" fill="#f59e0b"/>
+        <circle cx="162" cy="203" r="10" fill="#1c2733"/>
+        <circle cx="186" cy="203" r="10" fill="#fafaf8" stroke="#e5e7eb" stroke-width="1"/>
+        <text x="208" y="208" fill="#9ba7b4" font-size="9" font-family="monospace">Color Palette</text>
+
+        <!-- ── SOCIAL MEDIA POSTS CARD ── -->
+        <rect x="240" y="195" width="230" height="180" rx="18" fill="white" filter="url(#cardShadow)" stroke="rgba(245,158,11,.12)" stroke-width="1"/>
+        <rect x="240" y="195" width="230" height="5" rx="3" fill="#f59e0b" opacity=".8"/>
+        <!-- post grid 2x2 -->
+        <rect x="258" y="218" width="88" height="66" rx="8" fill="url(#cardGrad1)" stroke="rgba(14,165,233,.2)" stroke-width="1"/>
+        <rect x="356" y="218" width="88" height="66" rx="8" fill="url(#cardGrad2)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+        <rect x="258" y="294" width="88" height="66" rx="8" fill="url(#cardGrad2)" stroke="rgba(245,158,11,.15)" stroke-width="1"/>
+        <rect x="356" y="294" width="88" height="66" rx="8" fill="url(#cardGrad1)" stroke="rgba(14,165,233,.15)" stroke-width="1"/>
+        <!-- post icons -->
+        <circle cx="302" cy="247" r="16" fill="rgba(14,165,233,.25)" stroke="rgba(14,165,233,.4)" stroke-width="1.5"/>
+        <text x="302" y="253" fill="#0ea5e9" font-size="14" text-anchor="middle">📊</text>
+        <circle cx="400" cy="247" r="16" fill="rgba(245,158,11,.25)" stroke="rgba(245,158,11,.4)" stroke-width="1.5"/>
+        <text x="400" y="253" fill="#f59e0b" font-size="14" text-anchor="middle">🎯</text>
+        <circle cx="302" cy="323" r="16" fill="rgba(245,158,11,.25)" stroke="rgba(245,158,11,.4)" stroke-width="1.5"/>
+        <text x="302" y="329" fill="#f59e0b" font-size="14" text-anchor="middle">✨</text>
+        <circle cx="400" cy="323" r="16" fill="rgba(14,165,233,.25)" stroke="rgba(14,165,233,.4)" stroke-width="1.5"/>
+        <text x="400" y="329" fill="#0ea5e9" font-size="14" text-anchor="middle">🚀</text>
+        <!-- label -->
+        <text x="355" y="384" fill="#9ba7b4" font-size="9" font-family="monospace" text-anchor="middle">Social Media Content</text>
+
+        <!-- ── STRATEGY CARD ── -->
+        <rect x="60" y="250" width="165" height="190" rx="18" fill="white" filter="url(#cardShadow)" stroke="rgba(13,148,136,.12)" stroke-width="1"/>
+        <rect x="60" y="250" width="165" height="5" rx="3" fill="#0d9488" opacity=".8"/>
+        <text x="80" y="277" fill="#0d1117" font-size="10" font-family="sans-serif" font-weight="700">Growth Roadmap</text>
+        <!-- progress bars -->
+        <text x="80" y="297" fill="#6b737e" font-size="8" font-family="monospace">Branding</text>
+        <rect x="80" y="301" width="120" height="6" rx="3" fill="#f0f4f8"/>
+        <rect x="80" y="301" width="108" height="6" rx="3" fill="url(#barGrad)"/>
+        <text x="80" y="322" fill="#6b737e" font-size="8" font-family="monospace">Social Media</text>
+        <rect x="80" y="326" width="120" height="6" rx="3" fill="#f0f4f8"/>
+        <rect x="80" y="326" width="90" height="6" rx="3" fill="#f59e0b" opacity=".8"/>
+        <text x="80" y="347" fill="#6b737e" font-size="8" font-family="monospace">Marketing</text>
+        <rect x="80" y="351" width="120" height="6" rx="3" fill="#f0f4f8"/>
+        <rect x="80" y="351" width="78" height="6" rx="3" fill="url(#barGrad)" opacity=".7"/>
+        <text x="80" y="372" fill="#6b737e" font-size="8" font-family="monospace">Audience Growth</text>
+        <rect x="80" y="376" width="120" height="6" rx="3" fill="#f0f4f8"/>
+        <rect x="80" y="376" width="96" height="6" rx="3" fill="#0d9488" opacity=".8"/>
+        <!-- mini line chart -->
+        <polyline points="80,415 100,405 120,410 140,395 160,400 180,385 200,388" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+        <circle cx="200" cy="388" r="4" fill="#0ea5e9"/>
+
+        <!-- ── FLOATING STAT CHIPS ── -->
+        <!-- chip: followers -->
+        <rect x="310" y="90" width="130" height="42" rx="12" fill="white" filter="url(#softShadow)" stroke="rgba(14,165,233,.15)" stroke-width="1"/>
+        <circle cx="330" cy="111" r="10" fill="rgba(14,165,233,.12)"/>
+        <text x="330" y="116" fill="#0ea5e9" font-size="11" text-anchor="middle">↑</text>
+        <text x="348" y="107" fill="#0d1117" font-size="9" font-family="sans-serif" font-weight="700">+2.4k Followers</text>
+        <text x="348" y="119" fill="#9ba7b4" font-size="8" font-family="monospace">this month</text>
+
+        <!-- chip: posts -->
+        <rect x="70" y="456" width="130" height="42" rx="12" fill="white" filter="url(#softShadow)" stroke="rgba(245,158,11,.15)" stroke-width="1"/>
+        <circle cx="90" cy="477" r="10" fill="rgba(245,158,11,.12)"/>
+        <text x="90" y="482" fill="#f59e0b" font-size="11" text-anchor="middle">📅</text>
+        <text x="108" y="473" fill="#0d1117" font-size="9" font-family="sans-serif" font-weight="700">30 Posts/Month</text>
+        <text x="108" y="485" fill="#9ba7b4" font-size="8" font-family="monospace">content plan</text>
+
+        <!-- chip: reach -->
+        <rect x="340" y="395" width="130" height="42" rx="12" fill="white" filter="url(#softShadow)" stroke="rgba(13,148,136,.15)" stroke-width="1"/>
+        <circle cx="360" cy="416" r="10" fill="rgba(13,148,136,.12)"/>
+        <text x="360" y="421" fill="#0d9488" font-size="11" text-anchor="middle">🌍</text>
+        <text x="378" y="412" fill="#0d1117" font-size="9" font-family="sans-serif" font-weight="700">Global Reach</text>
+        <text x="378" y="424" fill="#9ba7b4" font-size="8" font-family="monospace">UAE & beyond</text>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- Skills -->
+<section id="skills" class="section">
+  <div class="section-label">Technical Expertise</div>
+  <h2 class="section-title">Skills & Technologies</h2>
+  <p class="section-desc">A comprehensive toolkit for end-to-end data science — from data wrangling to production-ready model deployment.</p>
+  <div class="skills-grid">
+    <div class="skill-card reveal-el">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      </div>
+      <h3>Machine Learning</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">scikit-learn</span>
+        <span class="skill-tag">XGBoost</span>
+        <span class="skill-tag">LightGBM</span>
+        <span class="skill-tag">Random Forest</span>
+        <span class="skill-tag">SVM</span>
+        <span class="skill-tag">Regression</span>
+        <span class="skill-tag">Clustering</span>
+      </div>
+    </div>
+    <div class="skill-card reveal-el">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2zm0 2a8 8 0 100 16A8 8 0 0012 4zm0 3a5 5 0 110 10A5 5 0 0112 7z"/></svg>
+      </div>
+      <h3>Deep Learning & AI</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">TensorFlow</span>
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">Keras</span>
+        <span class="skill-tag">CNN</span>
+        <span class="skill-tag">RNN / LSTM</span>
+        <span class="skill-tag">Transformers</span>
+        <span class="skill-tag">GANs</span>
+      </div>
+    </div>
+    <div class="skill-card reveal-el">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"/></svg>
+      </div>
+      <h3>NLP & Text Analytics</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">BERT</span>
+        <span class="skill-tag">GPT APIs</span>
+        <span class="skill-tag">NLTK</span>
+        <span class="skill-tag">spaCy</span>
+        <span class="skill-tag">HuggingFace</span>
+        <span class="skill-tag">Sentiment Analysis</span>
+      </div>
+    </div>
+    <div class="skill-card reveal-el">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v8H3v-8zm4-6h2v14H7V7zm4-4h2v18h-2V3zm4 6h2v12h-2V9zm4 4h2v8h-2v-8z"/></svg>
+      </div>
+      <h3>Data Analysis & Visualization</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">NumPy</span>
+        <span class="skill-tag">Matplotlib</span>
+        <span class="skill-tag">Seaborn</span>
+        <span class="skill-tag">Plotly</span>
+        <span class="skill-tag">Tableau</span>
+        <span class="skill-tag">Power BI</span>
+      </div>
+    </div>
+    <div class="skill-card reveal-el">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 6H2v14a2 2 0 002 2h14v-2H4V6zm16-4H8a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+      </div>
+      <h3>Data Engineering</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">ETL Pipelines</span>
+        <span class="skill-tag">Apache Spark</span>
+        <span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">APIs</span>
+      </div>
+    </div>
+    <div class="skill-card reveal-el">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+      </div>
+      <h3>MLOps & Deployment</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Flask</span>
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">AWS / GCP</span>
+        <span class="skill-tag">Streamlit</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">CI/CD</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects" class="section projects-section" style="background:white;">
+  <div class="section-label">Portfolio</div>
+  <h2 class="section-title">Featured Projects</h2>
+  <p class="section-desc">Real projects across data science and graphic design — each one built with care and creativity.</p>
+
+  <!-- Tab buttons -->
+  <div class="proj-tabs" style="display:flex;gap:.8rem;margin-bottom:2.5rem;flex-wrap:wrap;">
+    <button class="proj-tab active" onclick="switchTab('python',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2"/></svg>
+      Python & Data
+    </button>
+    <button class="proj-tab" onclick="switchTab('design',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Graphic Design
+    </button>
+  </div>
+
+  <!-- Python / Data Projects -->
+  <div id="tab-python" class="projects-grid tab-pane">
+
+    <!-- Project: Medical Image Classification -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Computer Vision</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <circle cx="50" cy="50" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity=".8"/>
+          <circle cx="50" cy="100" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity=".8"/>
+          <circle cx="50" cy="150" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity=".8"/>
+          <circle cx="150" cy="40" r="10" fill="none" stroke="#0d9488" stroke-width="1.5" opacity=".8"/>
+          <circle cx="150" cy="80" r="10" fill="none" stroke="#0d9488" stroke-width="1.5" opacity=".8"/>
+          <circle cx="150" cy="120" r="10" fill="none" stroke="#0d9488" stroke-width="1.5" opacity=".8"/>
+          <circle cx="150" cy="160" r="10" fill="none" stroke="#0d9488" stroke-width="1.5" opacity=".8"/>
+          <circle cx="250" cy="60" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity=".8"/>
+          <circle cx="250" cy="100" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity=".8"/>
+          <circle cx="250" cy="140" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity=".8"/>
+          <circle cx="350" cy="80" r="12" fill="rgba(14,165,233,.2)" stroke="#0ea5e9" stroke-width="2"/>
+          <circle cx="350" cy="120" r="12" fill="rgba(13,148,136,.2)" stroke="#0d9488" stroke-width="2"/>
+          <g stroke="#1c2733" stroke-width=".8" opacity=".6">
+            <line x1="60" y1="50" x2="140" y2="40"/><line x1="60" y1="50" x2="140" y2="80"/>
+            <line x1="60" y1="100" x2="140" y2="80"/><line x1="60" y1="100" x2="140" y2="120"/>
+            <line x1="60" y1="150" x2="140" y2="120"/><line x1="60" y1="150" x2="140" y2="160"/>
+            <line x1="160" y1="40" x2="240" y2="60"/><line x1="160" y1="120" x2="240" y2="100"/>
+            <line x1="260" y1="60" x2="338" y2="80"/><line x1="260" y1="140" x2="338" y2="120"/>
+          </g>
+          <text x="20" y="185" fill="#6b737e" font-size="9" font-family="monospace">CNN · ResNet50 · 97.2% accuracy</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Medical Image Classification (CNN)</h3>
+        <p>Deep learning pipeline using ResNet50 transfer learning to classify chest X-rays into pneumonia vs. normal with 97.2% accuracy.</p>
+        <div class="project-stack">
+          <span>PyTorch</span><span>ResNet50</span><span>OpenCV</span><span>Python</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project: Sentiment Analysis -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">NLP</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <text x="80" y="60" fill="#0ea5e9" font-size="22" font-family="monospace" opacity=".9">sentiment</text>
+          <text x="200" y="90" fill="#0d9488" font-size="16" font-family="monospace" opacity=".8">BERT</text>
+          <text x="30" y="110" fill="#d2a8ff" font-size="14" font-family="monospace" opacity=".7">tokens</text>
+          <text x="260" y="50" fill="#ffa657" font-size="12" font-family="monospace" opacity=".7">NLP</text>
+          <text x="140" y="140" fill="#a5d6ff" font-size="18" font-family="monospace" opacity=".8">embedding</text>
+          <text x="50" y="160" fill="#0ea5e9" font-size="11" font-family="monospace" opacity=".6">attention</text>
+          <rect x="20" y="175" width="60" height="8" rx="4" fill="#0d9488" opacity=".8"/>
+          <rect x="90" y="175" width="40" height="8" rx="4" fill="#f59e0b" opacity=".8"/>
+          <rect x="140" y="175" width="80" height="8" rx="4" fill="#0ea5e9" opacity=".8"/>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Sentiment Analysis Pipeline (BERT)</h3>
+        <p>Fine-tuned BERT for multi-class sentiment analysis on product reviews — 91% F1-score with an interactive visualization dashboard.</p>
+        <div class="project-stack">
+          <span>HuggingFace</span><span>BERT</span><span>Python</span><span>Plotly</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project: Sales Forecasting -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Data Analysis</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <rect x="30" y="140" width="30" height="40" rx="4" fill="rgba(14,165,233,.7)"/>
+          <rect x="75" y="110" width="30" height="70" rx="4" fill="rgba(14,165,233,.8)"/>
+          <rect x="120" y="80" width="30" height="100" rx="4" fill="rgba(14,165,233,.9)"/>
+          <rect x="165" y="60" width="30" height="120" rx="4" fill="#0ea5e9"/>
+          <rect x="210" y="90" width="30" height="90" rx="4" fill="rgba(14,165,233,.85)"/>
+          <rect x="255" y="115" width="30" height="65" rx="4" fill="rgba(14,165,233,.7)"/>
+          <rect x="300" y="100" width="30" height="80" rx="4" fill="rgba(13,148,136,.8)"/>
+          <rect x="345" y="70" width="30" height="110" rx="4" fill="#0d9488"/>
+          <line x1="20" y1="180" x2="390" y2="180" stroke="#1c2733" stroke-width="1"/>
+          <polyline points="45,140 90,110 135,80 180,60 225,85 270,112 315,98 360,68" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2" opacity=".8"/>
+          <text x="20" y="15" fill="#6b737e" font-size="9" font-family="monospace">Sales Forecasting Dashboard — Q1–Q4</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Sales Forecasting Dashboard</h3>
+        <p>Forecasting system using ARIMA + Prophet to predict monthly sales. Built an interactive Plotly dashboard for decision-making.</p>
+        <div class="project-stack">
+          <span>Prophet</span><span>ARIMA</span><span>Plotly</span><span>Power BI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project: Customer Segmentation -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Data Science</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <circle cx="80" cy="80" r="6" fill="#0ea5e9" opacity=".8"/><circle cx="100" cy="60" r="5" fill="#0ea5e9" opacity=".7"/>
+          <circle cx="65" cy="95" r="7" fill="#0ea5e9" opacity=".9"/><circle cx="90" cy="110" r="5" fill="#0ea5e9" opacity=".7"/>
+          <circle cx="200" cy="120" r="6" fill="#0d9488" opacity=".8"/><circle cx="220" cy="100" r="5" fill="#0d9488" opacity=".7"/>
+          <circle cx="185" cy="135" r="7" fill="#0d9488" opacity=".9"/>
+          <circle cx="310" cy="70" r="6" fill="#f59e0b" opacity=".8"/><circle cx="330" cy="55" r="5" fill="#f59e0b" opacity=".7"/>
+          <circle cx="295" cy="80" r="7" fill="#f59e0b" opacity=".9"/>
+          <circle cx="82" cy="85" r="40" fill="none" stroke="rgba(14,165,233,.25)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <circle cx="210" cy="125" r="38" fill="none" stroke="rgba(13,148,136,.25)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <circle cx="318" cy="65" r="38" fill="none" stroke="rgba(245,158,11,.25)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="20" y="185" fill="#6b737e" font-size="9" font-family="monospace">K-Means Clustering · Customer Segmentation</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Customer Segmentation</h3>
+        <p>Applied K-Means clustering on e-commerce data to identify distinct customer groups and enable targeted marketing strategies.</p>
+        <div class="project-stack">
+          <span>K-Means</span><span>PCA</span><span>Seaborn</span><span>Pandas</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Graphic Design Projects -->
+  <div id="tab-design" class="projects-grid tab-pane" style="display:none;">
+
+    <!-- Design Project 1: Brand Identity -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Branding</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <circle cx="200" cy="90" r="55" fill="none" stroke="rgba(14,165,233,.2)" stroke-width="1"/>
+          <circle cx="200" cy="90" r="38" fill="rgba(14,165,233,.07)" stroke="rgba(14,165,233,.3)" stroke-width="1.5"/>
+          <text x="200" y="82" fill="#0ea5e9" font-size="18" font-family="sans-serif" text-anchor="middle" font-weight="700">LAW</text>
+          <text x="200" y="102" fill="#0d9488" font-size="10" font-family="sans-serif" text-anchor="middle" letter-spacing="4">BRIDGE</text>
+          <rect x="60" y="155" width="80" height="4" rx="2" fill="rgba(14,165,233,.3)"/>
+          <rect x="260" y="155" width="80" height="4" rx="2" fill="rgba(13,148,136,.3)"/>
+          <rect x="70" y="165" width="60" height="3" rx="1.5" fill="rgba(14,165,233,.15)"/>
+          <rect x="270" y="165" width="60" height="3" rx="1.5" fill="rgba(13,148,136,.15)"/>
+          <text x="200" y="185" fill="#6b737e" font-size="9" font-family="monospace" text-anchor="middle">Brand Identity · Logo · Color Palette</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Law Bridge — Brand Identity (UAE)</h3>
+        <p>Complete brand identity for Law Bridge, a UAE-based legal company. Designed logo, color palette, typography system, and brand guidelines.</p>
+        <div class="project-stack">
+          <span>Illustrator</span><span>Photoshop</span><span>Canva</span><span>Branding</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Project 2: Social Media Pack -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Social Media</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <rect x="20" y="20" width="110" height="110" rx="14" fill="rgba(14,165,233,.08)" stroke="rgba(14,165,233,.25)" stroke-width="1.5"/>
+          <rect x="35" y="35" width="80" height="50" rx="6" fill="rgba(14,165,233,.15)"/>
+          <rect x="35" y="92" width="50" height="6" rx="3" fill="rgba(14,165,233,.4)"/>
+          <rect x="35" y="104" width="35" height="4" rx="2" fill="rgba(14,165,233,.2)"/>
+          <rect x="145" y="20" width="110" height="110" rx="14" fill="rgba(13,148,136,.08)" stroke="rgba(13,148,136,.25)" stroke-width="1.5"/>
+          <rect x="160" y="35" width="80" height="50" rx="6" fill="rgba(13,148,136,.15)"/>
+          <rect x="160" y="92" width="50" height="6" rx="3" fill="rgba(13,148,136,.4)"/>
+          <rect x="160" y="104" width="35" height="4" rx="2" fill="rgba(13,148,136,.2)"/>
+          <rect x="270" y="20" width="110" height="110" rx="14" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.25)" stroke-width="1.5"/>
+          <rect x="285" y="35" width="80" height="50" rx="6" fill="rgba(245,158,11,.15)"/>
+          <rect x="285" y="92" width="50" height="6" rx="3" fill="rgba(245,158,11,.4)"/>
+          <rect x="285" y="104" width="35" height="4" rx="2" fill="rgba(245,158,11,.2)"/>
+          <text x="200" y="185" fill="#6b737e" font-size="9" font-family="monospace" text-anchor="middle">Instagram · Facebook · LinkedIn Templates</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Social Media Content Pack</h3>
+        <p>Designed a complete set of social media post templates for multiple brands — consistent, eye-catching, and ready to publish across platforms.</p>
+        <div class="project-stack">
+          <span>Canva</span><span>Photoshop</span><span>Instagram</span><span>LinkedIn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Project 3: Logo Design -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Logo Design</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <polygon points="200,30 240,100 200,90 160,100" fill="rgba(14,165,233,.3)" stroke="#0ea5e9" stroke-width="1.5"/>
+          <polygon points="200,90 240,100 200,160 160,100" fill="rgba(13,148,136,.25)" stroke="#0d9488" stroke-width="1.5"/>
+          <circle cx="200" cy="100" r="12" fill="rgba(14,165,233,.15)" stroke="#0ea5e9" stroke-width="2"/>
+          <circle cx="130" cy="80" r="28" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.2)" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="130" y="76" fill="#f59e0b" font-size="9" font-family="monospace" text-anchor="middle">Logo</text>
+          <text x="130" y="88" fill="#f59e0b" font-size="9" font-family="monospace" text-anchor="middle">v1</text>
+          <circle cx="270" cy="80" r="28" fill="rgba(14,165,233,.06)" stroke="rgba(14,165,233,.2)" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="270" y="76" fill="#0ea5e9" font-size="9" font-family="monospace" text-anchor="middle">Logo</text>
+          <text x="270" y="88" fill="#0ea5e9" font-size="9" font-family="monospace" text-anchor="middle">v3</text>
+          <text x="200" y="185" fill="#6b737e" font-size="9" font-family="monospace" text-anchor="middle">Logo Design · Multiple Concepts · Revisions</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Multi-Client Logo Design Projects</h3>
+        <p>Delivered professional logo designs for 10+ clients across different industries — from minimal wordmarks to icon-based identity systems.</p>
+        <div class="project-stack">
+          <span>Illustrator</span><span>Figma</span><span>Canva</span><span>Logo Design</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Project 4: Poster / Flyer -->
+    <div class="project-card reveal-el">
+      <div class="project-visual">
+        <span class="project-badge">Print Design</span>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="200" fill="#0d1117"/>
+          <rect x="120" y="15" width="160" height="170" rx="10" fill="rgba(14,165,233,.05)" stroke="rgba(14,165,233,.2)" stroke-width="1.5"/>
+          <rect x="135" y="28" width="130" height="75" rx="6" fill="rgba(14,165,233,.12)"/>
+          <rect x="140" y="115" width="90" height="7" rx="3.5" fill="rgba(14,165,233,.5)"/>
+          <rect x="140" y="128" width="70" height="5" rx="2.5" fill="rgba(14,165,233,.25)"/>
+          <rect x="140" y="139" width="80" height="5" rx="2.5" fill="rgba(14,165,233,.2)"/>
+          <rect x="140" y="150" width="60" height="5" rx="2.5" fill="rgba(14,165,233,.15)"/>
+          <rect x="140" y="165" width="50" height="12" rx="4" fill="rgba(14,165,233,.3)" stroke="rgba(14,165,233,.5)" stroke-width="1"/>
+          <text x="200" y="185" fill="#6b737e" font-size="9" font-family="monospace" text-anchor="middle">Posters · Flyers · Event Graphics</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <h3>Poster & Flyer Designs</h3>
+        <p>Created promotional posters and event flyers for businesses and personal brands — clean layouts with strong visual hierarchy and impactful typography.</p>
+        <div class="project-stack">
+          <span>Canva</span><span>Photoshop</span><span>Typography</span><span>Print Design</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Graphic Design Clients Banner -->
+  <div id="design-clients-banner" class="design-clients-banner reveal-el" style="display:none;">
+    <div class="dcb-stat">
+      <div class="dcb-num">50<span>+</span></div>
+      <div class="dcb-label">Happy Design Clients</div>
+    </div>
+    <div class="dcb-divider"></div>
+    <div class="dcb-text">
+      <h3>Trusted by Clients Worldwide</h3>
+      <p>From UAE-based companies like <strong style="color:var(--cyan)">Law Bridge</strong> to individual brands — delivering creative designs that make an impact.</p>
+    </div>
+    <div class="dcb-divider"></div>
+    <div class="dcb-stat">
+      <div class="dcb-num">⭐ <span style="font-size:1.6rem;font-family:var(--body);color:rgba(255,255,255,.7)">5.0</span></div>
+      <div class="dcb-label">Average Client Rating</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Services -->
+<section id="services" class="section">
+  <div class="section-label">What I Offer</div>
+  <h2 class="section-title">Services</h2>
+  <p class="section-desc">From data analysis to creative design — here's how I can help you.</p>
+  <div class="services-grid">
+    <div class="svc-card reveal-el">
+      <div class="svc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M3 13h2v8H3v-8zm4-6h2v14H7V7zm4-4h2v18h-2V3zm4 6h2v12h-2V9zm4 4h2v8h-2v-8z"/></svg>
+      </div>
+      <h3>Data Analysis & Visualization</h3>
+      <p>Turn messy data into clear insights with charts, dashboards, and easy-to-understand reports.</p>
+    </div>
+    <div class="svc-card reveal-el">
+      <div class="svc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2zm1 14.93V15h2v-2h-2V9h-2v2H9v2h2v2h-1.07A8.001 8.001 0 0113 16.93z"/></svg>
+      </div>
+      <h3>ML Model Development</h3>
+      <p>Building predictive models for classification, regression, and clustering using Python and scikit-learn.</p>
+    </div>
+    <div class="svc-card reveal-el">
+      <div class="svc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M4 6H2v14a2 2 0 002 2h14v-2H4V6zm16-4H8a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+      </div>
+      <h3>Python Scripting & Automation</h3>
+      <p>Custom Python scripts for data cleaning, automation, web scraping, and workflow optimization.</p>
+    </div>
+    <div class="svc-card reveal-el">
+      <div class="svc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Logo & Brand Identity</h3>
+      <p>Professional logo design, color palette, and brand guidelines for businesses and personal brands.</p>
+    </div>
+    <div class="svc-card reveal-el">
+      <div class="svc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><rect x="2" y="3" width="20" height="14" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M8 21h8M12 17v4" stroke="white" stroke-width="2"/></svg>
+      </div>
+      <h3>Social Media Graphics</h3>
+      <p>Eye-catching post designs, banners, and content templates for Instagram, LinkedIn, and Facebook.</p>
+    </div>
+    <div class="svc-card reveal-el">
+      <div class="svc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+      </div>
+      <h3>Poster & Flyer Design</h3>
+      <p>Clean, professional posters, event flyers, and promotional materials with strong visual impact.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Experience -->
+<section id="experience" class="section experience-section" style="background:white;">
+  <div class="section-label">Career</div>
+  <h2 class="section-title">Experience</h2>
+  <p class="section-desc">My journey so far — freelancing, interning, and building real projects for real clients.</p>
+  <div style="max-width:700px; margin:0 auto;">
+    <div class="timeline">
+      <div class="tl-item reveal-el">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2023 — Present</div>
+        <div class="tl-title">Graphic Designer</div>
+        <div class="tl-company">Upwork — Freelance</div>
+        <div class="tl-desc">Delivering creative design solutions — logos, branding kits, social media graphics, and posters — for clients across different industries. Consistently receiving 5-star reviews for quality and communication.</div>
+      </div>
+      <div class="tl-item reveal-el">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — Present</div>
+        <div class="tl-title">Graphic Designer</div>
+        <div class="tl-company">Law Bridge — UAE Based Company</div>
+        <div class="tl-desc">Designed the complete brand identity for Law Bridge, a legal services company based in UAE. Responsibilities included logo design, brand color palette, typography selection, and social media visual templates.</div>
+      </div>
+      <div class="tl-item reveal-el">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — 2025</div>
+        <div class="tl-title">Graphic Designer</div>
+        <div class="tl-company">Plivix — Tech Company</div>
+        <div class="tl-desc">Worked as a Designer at Plivix, creating UI assets, brand visuals, and marketing materials. Collaborated with the product team to design user-facing components and social media content.</div>
+      </div>
+      <div class="tl-item reveal-el">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — 2025</div>
+        <div class="tl-title">Graphic Designer</div>
+        <div class="tl-company">Sellagent — US Based Company</div>
+        <div class="tl-desc">Worked as a Designer at Sellagent, a US-based company. Designed marketing collateral, social media creatives, and brand assets that aligned with the company's visual identity and business goals.</div>
+      </div>
+      <div class="tl-item reveal-el">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024 — Present</div>
+        <div class="tl-title">Portfolio & Open Source Contributor</div>
+        <div class="tl-company">Behance / GitHub</div>
+        <div class="tl-desc">Publishing data science projects and design case studies to showcase skills, build an online presence, and contribute to the open-source community.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Education -->
+<section class="section">
+  <div class="section-label">Education</div>
+  <h2 class="section-title" style="text-align:center;">Academic Background</h2>
+  <div style="margin-top:3rem;">
+    <div class="edu-card reveal-el">
+      <div class="edu-icon">🎓</div>
+      <h3>University of Sargodha</h3>
+      <p class="degree">Bachelor of Engineering in Software Engineering</p>
+      <p style="margin-top:.5rem;color:var(--ink-muted);font-size:.9rem;">Focus: Data Science · AI · Machine Learning · Software Systems</p>
+      <div class="edu-year">2023 — 2027</div>
+      <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
+        <span style="padding:.25rem .8rem;background:rgba(14,165,233,.07);border:1px solid var(--border);border-radius:8px;font-size:.75rem;font-family:var(--mono);color:var(--slate);">Algorithms</span>
+        <span style="padding:.25rem .8rem;background:rgba(14,165,233,.07);border:1px solid var(--border);border-radius:8px;font-size:.75rem;font-family:var(--mono);color:var(--slate);">Statistics</span>
+        <span style="padding:.25rem .8rem;background:rgba(14,165,233,.07);border:1px solid var(--border);border-radius:8px;font-size:.75rem;font-family:var(--mono);color:var(--slate);">Linear Algebra</span>
+        <span style="padding:.25rem .8rem;background:rgba(14,165,233,.07);border:1px solid var(--border);border-radius:8px;font-size:.75rem;font-family:var(--mono);color:var(--slate);">Database Systems</span>
+        <span style="padding:.25rem .8rem;background:rgba(14,165,233,.07);border:1px solid var(--border);border-radius:8px;font-size:.75rem;font-family:var(--mono);color:var(--slate);">Computer Vision</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section contact-section" style="background:white;">
+  <div class="section-label">Get In Touch</div>
+  <div class="contact-wrapper">
+    <div class="contact-info reveal-el">
+      <h2 class="contact-title">Let's Work<br>Together!</h2>
+      <p>Whether you need a data analysis, an ML model, a Python script, or a graphic design — I'd love to help. I'm available for freelance projects and collaborations. I usually reply within 24 hours.</p>
+      <div class="contact-links">
+        <a href="mailto:mahnoorarshad588@gmail.com" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="#0ea5e9" stroke-width="2"/><polyline points="22,6 12,13 2,6" stroke="#0ea5e9" stroke-width="2"/></svg>
+          <span>mahnoorarshad588@gmail.com</span>
+        </a>
+        <a href="https://www.linkedin.com/in/mahnoor-arshad-a2224a291/" target="_blank" rel="noopener" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="#0ea5e9"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span>LinkedIn Profile</span>
+        </a>
+        <a href="https://www.upwork.com/freelancers/~014f4829c790997b5d" target="_blank" rel="noopener" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="#0d9488"><path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.546-1.405 0-2.543-1.14-2.543-2.546V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3.001-2.439-5.452-5.439-5.452z"/></svg>
+          <span>Upwork Profile</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form-wrap reveal-el">
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:.4rem;color:var(--ink);">Send a Message</h3>
+      <p style="font-size:.8rem;color:var(--ink-muted);margin-bottom:1.4rem;">Message seedhi aapki inbox mein aayegi ✓</p>
+
+      <form id="contactForm" style="display:flex;flex-direction:column;gap:0;">
+        <div class="form-group">
+          <input type="text" id="from_name" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <input type="email" id="from_email" placeholder="Your Email" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="subject" placeholder="Subject (e.g. Design Project, ML Work)">
+        </div>
+        <div class="form-group">
+          <textarea id="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;font-size:.95rem;">
+          Send Message
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="white" stroke-width="2"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="white" stroke-width="2" fill="none"/></svg>
+        </button>
+
+        <div id="formStatus" style="display:none;margin-top:.9rem;padding:.75rem 1rem;border-radius:10px;font-size:.85rem;text-align:center;"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div style="margin-bottom:.6rem;font-size:1rem;color:rgba(255,255,255,.7);">
+    <span style="color:var(--cyan);font-family:'DM Serif Display',serif;font-size:1.2rem;">Mahnoor Arshad</span> &nbsp;·&nbsp; Data Scientist & Graphic Designer
+  </div>
+  <p>&copy; 2026 Mahnoor Arshad · Sargodha, Pakistan · All rights reserved</p>
+</footer>
+
+<!-- Animated Back to Top -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+  <span class="btt-ring"></span>
+  <span class="btt-orbit"></span>
+  <span class="btt-circle">
+    <span class="btt-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </span>
+  </span>
+</button>
+
+<!-- Dark Mode Toggle -->
+<button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+  <span class="toggle-knob"></span>
+</button>
+
+<script>
+// Loader
+window.addEventListener('load', () => {
+  const l = document.getElementById('loader');
+  setTimeout(() => { l.style.opacity = '0'; setTimeout(() => l.style.display = 'none', 600); }, 1500);
+});
+
+// Cursor
+const dot = document.getElementById('curDot');
+const ring = document.getElementById('curRing');
+document.addEventListener('mousemove', e => {
+  dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+});
+
+// Navbar
+window.addEventListener('scroll', () => {
+  const nb = document.getElementById('navbar');
+  const btt = document.getElementById('btt');
+  if (window.scrollY > 60) { nb.classList.add('scrolled'); } else { nb.classList.remove('scrolled'); }
+  if (window.scrollY > 400) { btt.classList.add('show'); } else { btt.classList.remove('show'); }
+});
+
+// ── Mobile Sidebar ──
+(function() {
+  var hamburger   = document.getElementById('hamburger');
+  var sidebar     = document.getElementById('mobile-sidebar');
+  var overlay     = document.getElementById('mobile-overlay');
+  var closeBtn    = document.getElementById('sidebar-close');
+  var sidebarLinks = document.querySelectorAll('#mobile-sidebar .sidebar-nav a');
+
+  function openSidebar() {
+    sidebar.classList.add('is-open');
+    overlay.classList.add('visible');
+    hamburger.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('visible');
+    hamburger.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburger) {
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      sidebar.classList.contains('is-open') ? closeSidebar() : openSidebar();
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeSidebar);
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', closeSidebar);
+  }
+
+  sidebarLinks.forEach(function(link) {
+    link.addEventListener('click', closeSidebar);
+  });
+
+  // Keyboard: Escape to close
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSidebar();
+  });
+})();
+
+// ── Dark Mode Toggle ──
+const themeToggle = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem('mahnoor-theme');
+if (savedTheme === 'dark') {
+  document.body.classList.add('dark-mode');
+}
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('mahnoor-theme', isDark ? 'dark' : 'light');
+    // Ripple effect on toggle
+    themeToggle.style.transform = 'scale(0.92)';
+    setTimeout(() => themeToggle.style.transform = '', 180);
+  });
+}
+
+// Typewriter
+const words = ['Machine Learning Engineer', 'Data Scientist', 'Python Developer', 'Graphic Designer', 'AI/NLP Enthusiast'];
+let wi = 0, ci = 0, deleting = false;
+const tw = document.getElementById('typewriter');
+function type() {
+  const w = words[wi];
+  if (deleting) ci--; else ci++;
+  tw.textContent = w.substring(0, ci);
+  let speed = deleting ? 45 : 90;
+  if (!deleting && ci === w.length) { speed = 2200; deleting = true; }
+  else if (deleting && ci === 0) { deleting = false; wi = (wi + 1) % words.length; speed = 350; }
+  setTimeout(type, speed);
+}
+setTimeout(type, 1800);
+
+// Counter animation
+function animateCounter(el, target, suffix) {
+  let cur = 0;
+  const step = target / 60;
+  const t = setInterval(() => {
+    cur += step;
+    if (cur >= target) { cur = target; clearInterval(t); }
+    el.textContent = Math.floor(cur) + suffix;
+  }, 25);
+}
+let countersStarted = false;
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !countersStarted) {
+      countersStarted = true;
+      animateCounter(document.getElementById('cnt1'), 15, '');
+      animateCounter(document.getElementById('cnt2'), 50, '+');
+      animateCounter(document.getElementById('cnt3'), 3, '+');
+    }
+  });
+}, { threshold: 0.5 });
+counterObs.observe(document.getElementById('cnt1'));
+
+// Reveal on scroll
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal-el').forEach(el => revObs.observe(el));
+
+// Particles
+function makeParticle() {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.cssText = `left:${Math.random()*100}%;bottom:0;animation-duration:${14+Math.random()*10}s;animation-delay:${Math.random()*2}s;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;opacity:${0.1+Math.random()*.25};`;
+  const container = document.getElementById('particles-hero');
+  if (container) { container.appendChild(p); setTimeout(() => p.remove(), 25000); }
+}
+setInterval(makeParticle, 800);
+
+// ── Brand CTA → scroll to contact + pre-fill subject ──
+function openBrandContact() {
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      const subjectField = document.getElementById('subject');
+      const nameField    = document.getElementById('from_name');
+      if (subjectField && !subjectField.value) {
+        subjectField.value = "Let's Build My Brand Together";
+        subjectField.style.borderColor  = 'var(--cyan)';
+        subjectField.style.boxShadow    = '0 0 0 3px rgba(14,165,233,.15)';
+        setTimeout(() => {
+          subjectField.style.borderColor = '';
+          subjectField.style.boxShadow   = '';
+        }, 2500);
+      }
+      if (nameField) nameField.focus();
+    }, 850);
+  }
+}
+
+// Tab switching for projects
+function switchTab(tab, btn) {
+  // Update buttons
+  document.querySelectorAll('.proj-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Show/hide panes
+  document.getElementById('tab-python').style.display = tab === 'python' ? 'grid' : 'none';
+  document.getElementById('tab-design').style.display = tab === 'design' ? 'grid' : 'none';
+  // Show/hide design clients banner
+  const banner = document.getElementById('design-clients-banner');
+  banner.style.display = tab === 'design' ? 'grid' : 'none';
+}
+
+// ── EMAILJS CONTACT FORM ── (Fixed: removed onsubmit="return false" bug)
+const EMAILJS_SERVICE_ID  = 'service_uzyplhl';
+const EMAILJS_TEMPLATE_ID = 'template_y3lqpni';
+const EMAILJS_PUBLIC_KEY  = 'Xxh_WnP_OCTJZAhAO';
+
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+const contactForm = document.getElementById('contactForm');
+const submitBtn   = document.getElementById('submitBtn');
+const formStatus  = document.getElementById('formStatus');
+
+function showStatus(msg, type) {
+  // type: 'error' | 'success' | 'warn'
+  const styles = {
+    error:   'background:rgba(239,68,68,.08);color:#dc2626;border:1px solid rgba(239,68,68,.2);',
+    success: 'background:rgba(13,148,136,.1);color:#0d9488;border:1px solid rgba(13,148,136,.25);',
+    warn:    'background:#fef9c3;color:#854d0e;border:1px solid #fde047;'
+  };
+  formStatus.style.cssText = 'display:block;margin-top:.9rem;padding:.75rem 1rem;border-radius:10px;font-size:.85rem;text-align:center;' + styles[type];
+  formStatus.textContent = msg;
+}
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault(); // This now actually works — the form no longer has onsubmit="return false"
+
+    const name    = document.getElementById('from_name').value.trim();
+    const email   = document.getElementById('from_email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validation
+    if (!name || !email || !message) {
+      showStatus('⚠ Please fill in your name, email, and message.', 'warn');
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      showStatus('⚠ Please enter a valid email address.', 'warn');
+      return;
+    }
+
+    // Show sending state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span style="opacity:.65">Sending…</span>';
+    formStatus.style.display = 'none';
+
+    try {
+      // Variables match your EmailJS template exactly:
+      // {{name}}, {{title}}, {{message}}, {{email}}
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        name:    name,
+        title:   subject || 'Portfolio Contact',
+        message: message,
+        email:   email
+      });
+
+      showStatus('✓ Message sent! I\'ll reply within 24 hours.', 'success');
+
+      // Reset form fields
+      contactForm.reset();
+
+      // Reset button
+      submitBtn.style.background = 'var(--teal)';
+      submitBtn.innerHTML = '✓ Sent!';
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.style.background = '';
+        submitBtn.innerHTML = 'Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="white" stroke-width="2"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="white" stroke-width="2" fill="none"/></svg>';
+      }, 5000);
+
+    } catch(err) {
+      console.error('EmailJS error:', err);
+      let errorMsg = '✗ Something went wrong. Please try again.';
+      if (err.status === 400)      errorMsg = '✗ Invalid data. Please check your inputs.';
+      else if (err.status === 401) errorMsg = '✗ Auth failed. Check EmailJS credentials.';
+      else if (err.status === 403) errorMsg = '✗ Access denied. Check EmailJS service config.';
+      else if (err.status === 429) errorMsg = '✗ Too many requests. Please wait a moment.';
+      else if (!navigator.onLine)  errorMsg = '✗ No internet connection.';
+
+      showStatus(errorMsg, 'error');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Try Again <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="white" stroke-width="2"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="white" stroke-width="2" fill="none"/></svg>';
+    }
+  });
+}
+</script>
+</body>
+</html>
